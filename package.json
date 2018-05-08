@@ -1,7 +1,7 @@
 {
   "name": "mermaid",
   "main": "./lib/index",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A plugin for drawing diagrams and flowcharts within Markdown",
   "keywords": [],
   "repository": "https://github.com/inkdropapp/inkdrop-mermaid",
