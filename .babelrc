@@ -1,15 +1,11 @@
 {
   "presets": [
-    ["env", {
-      "targets": { "electron": "1.7.8" },
-      "useBuiltIns": "usage",
-      "debug": false
+    ["@babel/preset-env", {
+      "targets": { "electron": "3.1.4" }
     }],
-    "react",
-    "flow"
+    "@babel/preset-react"
   ],
   "plugins": [
-    "transform-decorators-legacy",
-    "transform-function-bind",
+    "@babel/plugin-proposal-class-properties"
   ]
 }

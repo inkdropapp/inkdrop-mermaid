@@ -1,35 +1,52 @@
-import React from 'react'
+import PropTypes from 'prop-types'
+import * as React from 'react'
 import { mermaidAPI } from 'mermaid'
+import { markdownRenderer } from 'inkdrop'
 
 class Mermaid extends React.Component {
-  constructor (props) {
+  static propTypes = {
+    children: PropTypes.arrayOf(PropTypes.string)
+  }
+
+  constructor(props) {
     super(props)
-    this.mermaidId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5)
+    this.mermaidId = Math.random()
+      .toString(36)
+      .replace(/[^a-z]+/g, '')
+      .substr(0, 5)
     this.state = { svg: '' }
   }
-  componentDidMount () {
+  componentDidMount() {
     this.renderDiagram(this.props.children[0])
   }
-  componentWillUpdate (nextProps) {
-    if (nextProps.children[0] !== this.props.children[0]) {
-      this.renderDiagram(nextProps.children[0])
+  componentDidUpdate(prevProps) {
+    if (prevProps.children[0] !== this.props.children[0]) {
+      this.renderDiagram(this.props.children[0])
     }
   }
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.cleanupMermaidDiv()
   }
-  shouldComponentUpdate (nextProps, nextState) {
-    return nextProps.children[0] !== this.props.children[0] ||
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      nextProps.children[0] !== this.props.children[0] ||
       nextState.svg !== this.state.svg
+    )
   }
-  render () {
-    return <div className='mermaid-diagram' dangerouslySetInnerHTML={{ __html: this.state.svg }} />
+  render() {
+    console.log('renderrrrrrr')
+    return (
+      <div
+        className="mermaid-diagram"
+        dangerouslySetInnerHTML={{ __html: this.state.svg }}
+      />
+    )
   }
-  renderDiagram (code) {
+  renderDiagram(code) {
     this.cleanupMermaidDiv()
     mermaidAPI.render(this.mermaidId, code, svg => this.setState({ svg }))
   }
-  cleanupMermaidDiv () {
+  cleanupMermaidDiv() {
     const el = document.querySelector(`#${this.mermaidId}`)
     if (el) el.remove()
   }
@@ -44,22 +61,20 @@ module.exports = {
     }
   },
 
-  activate () {
+  activate() {
     mermaidAPI.initialize({
       startOnLoad: false,
       theme: inkdrop.config.get('mermaid.theme')
     })
 
-    const { MDEPreview } = inkdrop.components.classes
-    if (MDEPreview) {
-      MDEPreview.remarkCodeComponents.mermaid = Mermaid
+    if (markdownRenderer) {
+      markdownRenderer.remarkCodeComponents.mermaid = Mermaid
     }
   },
 
-  deactivate () {
-    const { MDEPreview } = inkdrop.components.classes
-    if (MDEPreview) {
-      MDEPreview.remarkCodeComponents.mermaid = null
+  deactivate() {
+    if (markdownRenderer) {
+      markdownRenderer.remarkCodeComponents.mermaid = null
     }
   }
 }
