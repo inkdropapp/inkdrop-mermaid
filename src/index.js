@@ -34,7 +34,6 @@ class Mermaid extends React.Component {
     )
   }
   render() {
-    console.log('renderrrrrrr')
     return (
       <div
         className="mermaid-diagram"
