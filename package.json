@@ -7,7 +7,7 @@
   "repository": "https://github.com/inkdropapp/inkdrop-mermaid",
   "license": "MIT",
   "engines": {
-    "inkdrop": "^3.15.0"
+    "inkdrop": "^4.x"
   },
   "scripts": {
     "build": "babel src/ -d lib/",
