@@ -10,11 +10,13 @@ class Mermaid extends React.Component {
 
   constructor(props) {
     super(props)
-    this.mermaidId = Math.random()
-      .toString(36)
-      .replace(/[^a-z]+/g, '')
-      .substr(0, 5)
-    this.state = { svg: '' }
+    this.mermaidId =
+      'mermaid-' +
+      Math.random()
+        .toString(36)
+        .replace(/[^a-z]+/g, '')
+        .substr(0, 5)
+    this.state = { svg: '', error: null }
   }
   componentDidMount() {
     this.renderDiagram(this.props.children[0])
@@ -30,24 +32,43 @@ class Mermaid extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     return (
       nextProps.children[0] !== this.props.children[0] ||
-      nextState.svg !== this.state.svg
+      nextState.svg !== this.state.svg ||
+      nextState.error !== this.state.error
     )
   }
   render() {
+    const { error } = this.state
+    console.log('MERMAID: render error', error)
+
     return (
-      <div
-        className="mermaid-diagram"
-        dangerouslySetInnerHTML={{ __html: this.state.svg }}
-      />
+      <div className="mermaid-diagram">
+        <div dangerouslySetInnerHTML={{ __html: this.state.svg }} />
+        {error && (
+          <div className="ui error message">
+            <div className="header">Failed to render Marmaid</div>
+            <div>
+              <pre>{error.message}</pre>
+            </div>
+          </div>
+        )}
+      </div>
     )
   }
   renderDiagram(code) {
-    this.cleanupMermaidDiv()
-    mermaidAPI.render(this.mermaidId, code, svg => this.setState({ svg }))
+    try {
+      this.cleanupMermaidDiv()
+      mermaidAPI.render(this.mermaidId, code, svg =>
+        this.setState({ svg, error: null })
+      )
+    } catch (e) {
+      this.setState({ error: e, svg: '' })
+    }
   }
   cleanupMermaidDiv() {
     const el = document.querySelector(`#${this.mermaidId}`)
     if (el) el.remove()
+    const el2 = document.querySelector(`#d${this.mermaidId}`)
+    if (el2) el2.remove()
   }
 }
 
