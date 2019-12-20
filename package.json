@@ -14,7 +14,7 @@
     "dev": "babel src/ -s -d lib/ --watch"
   },
   "dependencies": {
-    "mermaid": "8.0.0"
+    "mermaid": "8.4.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
