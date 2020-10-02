@@ -10,7 +10,6 @@ ipm install mermaid
 
 ## Usage
 
-
     ```mermaid
     graph LR
         A --- B
@@ -21,7 +20,6 @@ ipm install mermaid
 It will be rendered as:
 
 ![](https://github.com/inkdropapp/inkdrop-mermaid/raw/master/docs/images/example-01.png)
-
 
     ```mermaid
     sequenceDiagram
@@ -41,3 +39,14 @@ It will be rendered as:
 
 ![](https://github.com/inkdropapp/inkdrop-mermaid/raw/master/docs/images/example-02.png)
 
+## Changelog
+
+### 2.2.0
+
+Updated to the latest mermaid version (8.8.0) [October 2, 2020]
+
+### 2.1.0
+
+Updated to the latest mermaid version [December 20, 2019]
+
+### 1.0.0 - First Release
