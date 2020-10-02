@@ -7,21 +7,12 @@
   "repository": "https://github.com/inkdropapp/inkdrop-mermaid",
   "license": "MIT",
   "engines": {
-    "inkdrop": "^4.x"
-  },
-  "scripts": {
-    "build": "babel src/ -d lib/",
-    "dev": "babel src/ -s -d lib/ --watch"
+    "inkdrop": "^5.x"
   },
   "dependencies": {
-    "mermaid": "8.4.4"
+    "mermaid": "8.8.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.11.6",
-    "@babel/core": "^7.11.6",
-    "@babel/plugin-proposal-class-properties": "^7.10.4",
-    "@babel/preset-env": "^7.11.5",
-    "@babel/preset-react": "^7.10.4",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.10.0",
     "eslint-config-prettier": "^6.12.0",
