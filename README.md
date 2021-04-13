@@ -41,6 +41,10 @@ It will be rendered as:
 
 ## Changelog
 
+### 2.3.0
+
+Updated to the latest mermaid version (8.9.2) [April 13, 2021]
+
 ### 2.2.0
 
 Updated to the latest mermaid version (8.8.0) [October 2, 2020]
