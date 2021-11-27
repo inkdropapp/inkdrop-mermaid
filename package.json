@@ -1,7 +1,7 @@
 {
   "name": "mermaid",
   "main": "./lib/index",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Lets you draw diagrams and flowcharts with Mermaid",
   "keywords": [],
   "repository": "https://github.com/inkdropapp/inkdrop-mermaid",
@@ -10,14 +10,14 @@
     "inkdrop": "^5.x"
   },
   "dependencies": {
-    "mermaid": "8.8.0"
+    "mermaid": "8.9.2"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.10.0",
-    "eslint-config-prettier": "^6.12.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.21.2",
-    "prettier": "^2.1.2"
+    "eslint": "^7.24.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react": "^7.23.2",
+    "prettier": "^2.2.1"
   }
 }
