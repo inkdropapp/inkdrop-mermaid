@@ -47,6 +47,8 @@ Mermaid supports custom theme variables:
 
 * https://mermaid-js.github.io/mermaid/#/./theming?id=theme-variables-reference-table
 
+![Options](https://github.com/inkdropapp/inkdrop-mermaid/raw/master/docs/images/config.png)
+
 ## Changelog
 
 ### 2.4.0 [Jan 30, 2022]
