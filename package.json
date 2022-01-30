@@ -10,7 +10,7 @@
     "inkdrop": "^5.x"
   },
   "dependencies": {
-    "mermaid": "8.9.2"
+    "mermaid": "8.13.10"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.3",
