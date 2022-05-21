@@ -51,6 +51,11 @@ Mermaid supports custom theme variables:
 
 ## Changelog
 
+### 2.5.0 [May 21, 2022]
+
+- Bump up Mermaid to v9.1.1 (Thanks [dkarter](https://github.com/inkdropapp/inkdrop-mermaid/pull/8))
+  - Adds new features such as [gitGraph](https://mermaid-js.github.io/mermaid/#/gitgraph)
+
 ### 2.4.0 [Jan 30, 2022]
 
 - Update to the latest mermaid version (8.13.10)
