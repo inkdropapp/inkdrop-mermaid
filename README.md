@@ -19,7 +19,7 @@ ipm install mermaid
 
 It will be rendered as:
 
-![](https://github.com/inkdropapp/inkdrop-mermaid/raw/master/docs/images/example-01.png)
+![Flowchart example](https://github.com/inkdropapp/inkdrop-mermaid/raw/master/docs/images/example-01.png)
 
     ```mermaid
     sequenceDiagram
@@ -37,7 +37,7 @@ It will be rendered as:
 
 It will be rendered as:
 
-![](https://github.com/inkdropapp/inkdrop-mermaid/raw/master/docs/images/example-02.png)
+![Sequence diagram example](https://github.com/inkdropapp/inkdrop-mermaid/raw/master/docs/images/example-02.png)
 
 ## Customizations
 
@@ -48,6 +48,38 @@ Mermaid supports custom theme variables:
 * https://mermaid-js.github.io/mermaid/#/./theming?id=theme-variables-reference-table
 
 ![Options](https://github.com/inkdropapp/inkdrop-mermaid/raw/master/docs/images/config.png)
+
+**Note**: You have to reload the app to get the custom theme CSS and variables applied.
+
+### Inline theming
+
+It is also possible to override theme settings locally, for a specific diagram, using directives `%%init%%` like so:
+
+    ```mermaid
+    %%{init:{
+      'theme':'base',
+      'themeVariables': {
+        'primaryColor':'#6A7FAB',
+        'primaryTextColor':'#FAFBF9',
+        'primaryBorderColor':'#6A7FAB',
+        'lineColor':'#6A7FABCC',
+        'textColor':'#6A7FABCC',
+        'fontSize':'16px'
+      }
+    }}%%
+
+    graph TD;
+        A-->B;
+        A-->C;
+        B-->D;
+        C-->D;
+    ```
+
+It yields:
+
+![Inline theming example](https://github.com/inkdropapp/inkdrop-mermaid/raw/master/docs/images/example-03.png)
+
+More details can be found on [the Mermaid documentation](https://mermaid-js.github.io/mermaid/#/theming?id=themes-at-the-local-or-current-level).
 
 ## Changelog
 
