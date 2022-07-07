@@ -83,6 +83,10 @@ More details can be found on [the Mermaid documentation](https://mermaid-js.gith
 
 ## Changelog
 
+### 2.5.1 [Jul 7, 2022]
+
+- Bump up Mermaid to [v9.1.3](https://github.com/mermaid-js/mermaid/releases/tag/9.1.3)
+
 ### 2.5.0 [May 21, 2022]
 
 - Bump up Mermaid to v9.1.1 (Thanks [dkarter](https://github.com/inkdropapp/inkdrop-mermaid/pull/8))
