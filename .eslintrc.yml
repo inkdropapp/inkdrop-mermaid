@@ -4,16 +4,13 @@ plugins:
 extends:
   - plugin:react/recommended
   - prettier
-parser: "@babel/eslint-parser"
+parser: '@babel/eslint-parser'
 env: {}
-globals:
-  __noteStatus__: true
-  emit: true
 rules:
   no-useless-escape: 0
   prefer-const: 2
   no-unused-vars:
     - 2
-    -
-      argsIgnorePattern: ^_
+    - argsIgnorePattern: ^_
       varsIgnorePattern: ^_
+  react/prop-types: 0
