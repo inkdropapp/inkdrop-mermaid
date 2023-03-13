@@ -25,14 +25,14 @@ It will be rendered as:
     sequenceDiagram
         participant Alice
         participant Bob
-        Alice->John: Hello John, how are you?
+        Alice->>John: Hello John, how are you?
         loop Healthcheck
-            John->John: Fight against hypochondria
+            John->>John: Fight against hypochondria
         end
         Note right of John: Rational thoughts <br/>prevail...
-        John-->Alice: Great!
-        John->Bob: How about you?
-        Bob-->John: Jolly good!
+        John-->>Alice: Great!
+        John->>Bob: How about you?
+        Bob-->>John: Jolly gooda!
     ```
 
 It will be rendered as:
@@ -45,7 +45,7 @@ You can configure mermaid options in Preferences.
 
 Mermaid supports custom theme variables:
 
-* https://mermaid-js.github.io/mermaid/#/./theming?id=theme-variables-reference-table
+- https://mermaid-js.github.io/mermaid/#/./theming?id=theme-variables-reference-table
 
 ![Options](https://github.com/inkdropapp/inkdrop-mermaid/raw/master/docs/images/config.png)
 
