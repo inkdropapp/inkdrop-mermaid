@@ -1,7 +1,7 @@
 {
   "name": "mermaid",
   "main": "./lib/index",
-  "version": "2.5.2",
+  "version": "2.5.3",
   "description": "Lets you draw diagrams and flowcharts with Mermaid",
   "keywords": [],
   "repository": "https://github.com/inkdropapp/inkdrop-mermaid",
