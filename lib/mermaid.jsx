@@ -57,12 +57,14 @@ export default class Mermaid extends React.Component {
   }
   renderDiagram = () => {
     const { children } = this.props
-    const code = typeof children === 'string' ? children : children[0]
+    const [code] = children || []
     try {
       this.cleanupMermaidDiv()
-      mermaidAPI.render(this.mermaidId, code, svg =>
-        this.setState({ svg, error: null })
-      )
+      if (typeof code === 'string') {
+        mermaidAPI.render(this.mermaidId, code, svg =>
+          this.setState({ svg, error: null })
+        )
+      }
     } catch (e) {
       this.setState({ error: e, svg: '' })
     }
