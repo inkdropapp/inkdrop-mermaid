@@ -83,6 +83,10 @@ More details can be found on [the Mermaid documentation](https://mermaid-js.gith
 
 ## Changelog
 
+### 2.6.0 [Aug 28, 2023]
+
+- Support lazy loading
+
 ### 2.5.3 [Jun 2, 2023]
 
 - Bump up Mermaid to [v9.4.3](https://github.com/mermaid-js/mermaid/releases/tag/v9.4.3)
