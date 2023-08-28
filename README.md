@@ -4,6 +4,10 @@ A plugin for drawing flowcharts and diagrams using [mermaid.js](https://mermaidj
 
 ## Install
 
+Check out [the docs](https://docs.inkdrop.app/manual/extend-inkdrop-with-plugins) on how to install plugins.
+
+### Command-line
+
 ```shell
 ipm install mermaid
 ```
