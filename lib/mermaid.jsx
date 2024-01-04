@@ -1,5 +1,5 @@
 import React from 'react'
-import { mermaidAPI } from 'mermaid/dist/mermaid.js'
+import mermaid from 'mermaid/dist/mermaid.js'
 
 export default class Mermaid extends React.Component {
   constructor(props) {
@@ -39,9 +39,8 @@ export default class Mermaid extends React.Component {
 
     return (
       <div
-        className={`mermaid-diagram theme-${themeName} ${
-          autoScale ? '' : 'disable-auto-scale'
-        }`}
+        className={`mermaid-diagram theme-${themeName} ${autoScale ? '' : 'disable-auto-scale'
+          }`}
       >
         <div dangerouslySetInnerHTML={{ __html: this.state.svg }} />
         {error && (
@@ -55,15 +54,14 @@ export default class Mermaid extends React.Component {
       </div>
     )
   }
-  renderDiagram = () => {
+  renderDiagram = async () => {
     const { children } = this.props
     const [code] = children || []
     try {
       this.cleanupMermaidDiv()
       if (typeof code === 'string') {
-        mermaidAPI.render(this.mermaidId, code, svg =>
-          this.setState({ svg, error: null })
-        )
+        const { svg } = await mermaid.render(this.mermaidId, code)
+        this.setState({ svg, error: null })
       }
     } catch (e) {
       this.setState({ error: e, svg: '' })
