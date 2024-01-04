@@ -39,8 +39,9 @@ export default class Mermaid extends React.Component {
 
     return (
       <div
-        className={`mermaid-diagram theme-${themeName} ${autoScale ? '' : 'disable-auto-scale'
-          }`}
+        className={`mermaid-diagram theme-${themeName} ${
+          autoScale ? '' : 'disable-auto-scale'
+        }`}
       >
         <div dangerouslySetInnerHTML={{ __html: this.state.svg }} />
         {error && (
