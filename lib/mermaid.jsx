@@ -22,7 +22,6 @@ export default class Mermaid extends React.Component {
     }
   }
   componentWillUnmount() {
-    this.cleanupMermaidDiv()
     this.subs.dispose()
   }
   shouldComponentUpdate(nextProps, nextState) {
@@ -59,7 +58,6 @@ export default class Mermaid extends React.Component {
     const { children } = this.props
     const [code] = children || []
     try {
-      this.cleanupMermaidDiv()
       if (typeof code === 'string') {
         const { svg } = await mermaid.render(this.mermaidId, code)
         this.setState({ svg, error: null })
@@ -67,11 +65,5 @@ export default class Mermaid extends React.Component {
     } catch (e) {
       this.setState({ error: e, svg: '' })
     }
-  }
-  cleanupMermaidDiv() {
-    const el = document.querySelector(`#${this.mermaidId}`)
-    if (el) el.remove()
-    const el2 = document.querySelector(`#d${this.mermaidId}`)
-    if (el2) el2.remove()
   }
 }
