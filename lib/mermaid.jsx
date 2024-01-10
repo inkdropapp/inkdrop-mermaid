@@ -10,10 +10,10 @@ export default class Mermaid extends React.Component {
         .toString(36)
         .replace(/[^a-z]+/g, '')
         .substr(0, 5)
-    this.state = { svg: '', error: null }
+    this.state = { error: null }
+    this.refContainer = React.createRef()
   }
   componentDidMount() {
-    this.renderDiagram()
     this.subs = inkdrop.config.observe('mermaid.theme', this.renderDiagram)
   }
   componentDidUpdate(prevProps) {
@@ -27,7 +27,6 @@ export default class Mermaid extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     return (
       nextProps.children[0] !== this.props.children[0] ||
-      nextState.svg !== this.state.svg ||
       nextState.error !== this.state.error
     )
   }
@@ -42,7 +41,7 @@ export default class Mermaid extends React.Component {
           autoScale ? '' : 'disable-auto-scale'
         }`}
       >
-        <div dangerouslySetInnerHTML={{ __html: this.state.svg }} />
+        <div ref={this.refContainer} />
         {error && (
           <div className="ui error message">
             <div className="header">Failed to render Mermaid</div>
@@ -59,11 +58,13 @@ export default class Mermaid extends React.Component {
     const [code] = children || []
     try {
       if (typeof code === 'string') {
+        const elContainer = this.refContainer.current
         const { svg } = await mermaid.render(this.mermaidId, code)
-        this.setState({ svg, error: null })
+        elContainer.innerHTML = svg
+        this.setState({ error: null })
       }
     } catch (e) {
-      this.setState({ error: e, svg: '' })
+      this.setState({ error: e })
     }
   }
 }
