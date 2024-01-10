@@ -1,6 +1,18 @@
 import React from 'react'
 import mermaid from 'mermaid/dist/mermaid.js'
 
+export function initMermaid() {
+  const { mermaidAPI } = require('mermaid/dist/mermaid.js')
+  mermaidAPI.initialize({
+    startOnLoad: false,
+    theme: inkdrop.config.get('mermaid.theme'),
+    themeCSS: inkdrop.config.get('mermaid.themeCSS'),
+    themeVariables: JSON.parse(
+      inkdrop.config.get('mermaid.themeVariables') || '{}'
+    )
+  })
+}
+
 export default class Mermaid extends React.Component {
   constructor(props) {
     super(props)
