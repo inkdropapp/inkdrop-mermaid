@@ -1,5 +1,5 @@
 import React from 'react'
-import { mermaidAPI } from 'mermaid/dist/mermaid.js'
+import mermaid from 'mermaid/dist/mermaid.js'
 
 export default class Mermaid extends React.Component {
   constructor(props) {
@@ -10,10 +10,10 @@ export default class Mermaid extends React.Component {
         .toString(36)
         .replace(/[^a-z]+/g, '')
         .substr(0, 5)
-    this.state = { svg: '', error: null }
+    this.state = { error: null }
+    this.refContainer = React.createRef()
   }
   componentDidMount() {
-    this.renderDiagram()
     this.subs = inkdrop.config.observe('mermaid.theme', this.renderDiagram)
   }
   componentDidUpdate(prevProps) {
@@ -22,13 +22,11 @@ export default class Mermaid extends React.Component {
     }
   }
   componentWillUnmount() {
-    this.cleanupMermaidDiv()
     this.subs.dispose()
   }
   shouldComponentUpdate(nextProps, nextState) {
     return (
       nextProps.children[0] !== this.props.children[0] ||
-      nextState.svg !== this.state.svg ||
       nextState.error !== this.state.error
     )
   }
@@ -43,7 +41,7 @@ export default class Mermaid extends React.Component {
           autoScale ? '' : 'disable-auto-scale'
         }`}
       >
-        <div dangerouslySetInnerHTML={{ __html: this.state.svg }} />
+        <div ref={this.refContainer} />
         {error && (
           <div className="ui error message">
             <div className="header">Failed to render Mermaid</div>
@@ -55,24 +53,18 @@ export default class Mermaid extends React.Component {
       </div>
     )
   }
-  renderDiagram = () => {
+  renderDiagram = async () => {
     const { children } = this.props
     const [code] = children || []
     try {
-      this.cleanupMermaidDiv()
       if (typeof code === 'string') {
-        mermaidAPI.render(this.mermaidId, code, svg =>
-          this.setState({ svg, error: null })
-        )
+        const elContainer = this.refContainer.current
+        const { svg } = await mermaid.render(this.mermaidId, code)
+        elContainer.innerHTML = svg
+        this.setState({ error: null })
       }
     } catch (e) {
-      this.setState({ error: e, svg: '' })
+      this.setState({ error: e })
     }
-  }
-  cleanupMermaidDiv() {
-    const el = document.querySelector(`#${this.mermaidId}`)
-    if (el) el.remove()
-    const el2 = document.querySelector(`#d${this.mermaidId}`)
-    if (el2) el2.remove()
   }
 }
