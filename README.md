@@ -87,6 +87,11 @@ More details can be found on [the Mermaid documentation](https://mermaid-js.gith
 
 ## Changelog
 
+### 2.7.0 [Feb 8, 2024]
+
+- Bump up Mermaid to [v10.6.1](https://github.com/mermaid-js/mermaid/releases/tag/v10.6.1)
+  - Support Sequence Diagram Actor Creation and Destruction (Thanks [@johmsalas](https://github.com/johmsalas))
+
 ### 2.6.0 [Aug 28, 2023]
 
 - Support lazy loading
