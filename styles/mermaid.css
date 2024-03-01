@@ -1,3 +1,6 @@
+@import url('inkdrop://mermaid/node_modules/@fortawesome/fontawesome-free/css/solid.css');
+@import url('inkdrop://mermaid/node_modules/@fortawesome/fontawesome-free/css/fontawesome.css');
+
 .mermaid-diagram {
   svg {
     color: black;
