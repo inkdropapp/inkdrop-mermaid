@@ -15,10 +15,11 @@ ipm install mermaid
 ## Usage
 
     ```mermaid
-    graph LR
-        A --- B
-        B-->C[fa:fa-ban forbidden]
-        B-->D(fa:fa-spinner);
+    graph TD;
+        A-->B;
+        A-->C;
+        B-->D;
+        C-->D;
     ```
 
 It will be rendered as:
