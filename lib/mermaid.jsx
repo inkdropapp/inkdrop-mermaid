@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useEffect, useContext } from 'react'
 import mermaid from 'mermaid/dist/mermaid.js'
 
-export function initMermaid() {
+export function initMermaid(isPrintMode) {
   const { mermaidAPI } = require('mermaid/dist/mermaid.js')
   mermaidAPI.initialize({
     startOnLoad: false,
-    theme: inkdrop.config.get('mermaid.theme'),
+    theme: isPrintMode ? 'forest' : inkdrop.config.get('mermaid.theme'),
     themeCSS: inkdrop.config.get('mermaid.themeCSS'),
     themeVariables: JSON.parse(
       inkdrop.config.get('mermaid.themeVariables') || '{}'
@@ -13,7 +13,7 @@ export function initMermaid() {
   })
 }
 
-export default class Mermaid extends React.Component {
+export class Mermaid extends React.Component {
   constructor(props) {
     super(props)
     this.mermaidId =
@@ -80,3 +80,15 @@ export default class Mermaid extends React.Component {
     }
   }
 }
+
+const MermaidThemeProvider = props => {
+  const { printMode } = useContext(inkdrop.markdownRenderer.Context)
+
+  useEffect(() => {
+    initMermaid(printMode)
+  }, [printMode])
+
+  return <Mermaid {...props} />
+}
+
+export default MermaidThemeProvider
