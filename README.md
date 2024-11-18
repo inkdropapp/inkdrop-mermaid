@@ -88,6 +88,10 @@ More details can be found on [the Mermaid documentation](https://mermaid-js.gith
 
 ## Changelog
 
+### 2.8.0 [Nov 18, 2024]
+
+- Bump up Mermaid to [v10.9.3](https://github.com/mermaid-js/mermaid/releases/tag/v10.9.3)
+
 ### 2.7.0 [Feb 8, 2024]
 
 - Bump up Mermaid to [v10.6.1](https://github.com/mermaid-js/mermaid/releases/tag/v10.6.1)
