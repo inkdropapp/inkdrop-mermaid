@@ -13,6 +13,9 @@ const compat = new FlatCompat({
 })
 
 export default [
+  {
+    ignores: ['**/lib']
+  },
   ...compat.extends('plugin:react/recommended', 'prettier'),
   {
     plugins: {
@@ -45,4 +48,3 @@ export default [
     }
   }
 ]
-

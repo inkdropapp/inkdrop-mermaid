@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react'
-import mermaid from 'mermaid/dist/mermaid.js'
+import mermaid from 'mermaid'
 
 export function initMermaid(isPrintMode) {
   const { mermaidAPI } = require('mermaid/dist/mermaid.js')

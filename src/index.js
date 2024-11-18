@@ -1,13 +1,11 @@
-'use babel'
+import { lazy } from 'react'
+import { markdownRenderer } from 'inkdrop'
 
-const { lazy } = require('react')
-const { markdownRenderer } = require('inkdrop')
-
-const Mermaid = lazy(() => {
-  const mod = require('./mermaid')
+const Mermaid = lazy(async () => {
+  const mod = await import('./mermaid')
   const { initMermaid } = mod
   initMermaid(false)
-  return Promise.resolve(mod)
+  return mod
 })
 
 module.exports = {
