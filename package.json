@@ -10,7 +10,7 @@
     "inkdrop": ">=5.6.0 <7.0.0"
   },
   "dependencies": {
-    "mermaid": "10.6.1"
+    "mermaid": "10.9.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
