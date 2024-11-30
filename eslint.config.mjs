@@ -1,26 +1,23 @@
-import react from 'eslint-plugin-react'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import js from '@eslint/js'
-import { FlatCompat } from '@eslint/eslintrc'
+import eslintJs from '@eslint/js'
+import eslintReact from 'eslint-plugin-react'
+import eslintPrettier from 'eslint-plugin-prettier/recommended'
+import globals from 'globals'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all
-})
-
+/** @type {import('eslint').Linter.Config[]} */
 export default [
-  ...compat.extends('plugin:react/recommended', 'prettier'),
+  eslintJs.configs.recommended,
+  eslintReact.configs.flat.recommended,
+  eslintReact.configs.flat['jsx-runtime'],
+  eslintPrettier,
   {
-    plugins: {
-      react
-    },
+    files: ['lib/**/*.js', 'lib/**/*.jsx'],
 
     languageOptions: {
-      globals: {}
+      ecmaVersion: 2022,
+      globals: {
+        ...globals.browser,
+        ...globals.commonjs
+      }
     },
 
     rules: {
@@ -45,4 +42,3 @@ export default [
     }
   }
 ]
-
