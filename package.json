@@ -1,24 +1,37 @@
 {
   "name": "mermaid",
-  "main": "./lib/index",
-  "version": "2.8.0",
   "description": "Lets you draw diagrams and flowcharts with Mermaid",
-  "keywords": [],
+  "main": "./lib/index",
+  "type": "module",
+  "version": "2.8.0",
+  "keywords": [
+    "inkdrop",
+    "mermaid"
+  ],
   "repository": "https://github.com/inkdropapp/inkdrop-mermaid",
   "license": "MIT",
   "engines": {
     "inkdrop": ">=5.6.0 <7.0.0"
   },
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup"
+  },
   "dependencies": {
-    "mermaid": "10.9.3"
+    "mermaid": "^11.4.1",
+    "svg-pan-zoom": "^3.6.2"
   },
   "devDependencies": {
-    "@eslint/js": "^9.15.0",
-    "eslint": "^9.15.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "eslint-plugin-react": "^7.37.2",
-    "globals": "^15.12.0",
-    "prettier": "^3.3.3"
+    "@eslint/js": "^9.20.0",
+    "@types/node": "^22.13.4",
+    "@types/react": "^19.0.8",
+    "eslint": "^9.20.1",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-react": "^7.37.4",
+    "prettier": "3.5.1",
+    "tsup": "^8.3.6",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.24.0"
   }
 }

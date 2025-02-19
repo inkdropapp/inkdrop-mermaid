@@ -1,3 +1,4 @@
+/** @type {import('prettier').Options} */
 const options = {
   arrowParens: 'avoid',
   singleQuote: true,
@@ -8,4 +9,4 @@ const options = {
   trailingComma: 'none'
 }
 
-module.exports = options
+export default options
