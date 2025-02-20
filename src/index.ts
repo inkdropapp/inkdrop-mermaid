@@ -5,6 +5,12 @@ const Mermaid = lazy(() => import('./components/Mermaid'))
 
 export default {
   config: {
+    additionalUI: {
+      title: 'Additional UI',
+      type: 'boolean',
+      description: 'Additional UI for the Mermaid diagram',
+      default: true
+    },
     panZoom: {
       title: 'Pan/Zoom mode',
       type: 'boolean',

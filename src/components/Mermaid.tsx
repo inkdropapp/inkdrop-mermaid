@@ -41,11 +41,15 @@ const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
 
   const observerTheme = useRef<Disposable | null>(null)
   const observerPanZoom = useRef<Disposable | null>(null)
+  const observerUI = useRef<Disposable | null>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
   const parentRef = useRef<HTMLDivElement | null>(null)
 
   const [theme, setTheme] = useState<MermaidConfig['theme']>(
     inkdrop.config.get('mermaid.theme') || 'default'
+  )
+  const [additionalUI, setAdditionalUI] = useState<boolean>(
+    inkdrop.config.get('mermaid.additionalUI')
   )
   const [type, setType] = useState<string>('')
   const { printMode } = useContext(inkdrop.markdownRenderer.Context)
@@ -70,24 +74,37 @@ const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
       panZoom => setPanZoomMode(panZoom)
     )
 
+    observerUI.current = inkdrop.config.observe<boolean>(
+      'mermaid.additionalUI',
+      additionalUI => setAdditionalUI(additionalUI)
+    )
+
     return () => {
       observerTheme.current?.dispose()
       observerPanZoom.current?.dispose()
+      observerUI.current?.dispose()
     }
   }, [])
 
   useEffect(() => {
-    if (!parentRef.current && printMode) return
+    if (!parentRef.current) return
 
     const preElement = parentRef.current?.parentElement
     if (!preElement) return
 
-    if (isDarkMode) {
+    if (isDarkMode && !printMode) {
       preElement.setAttribute('data-mermaid-theme', 'dark')
-    } else {
+    } else if (!isDarkMode && !printMode) {
       preElement.setAttribute('data-mermaid-theme', 'light')
     }
-  }, [isDarkMode])
+  }, [isDarkMode, printMode])
+
+  useEffect(() => {
+    if (!parentRef.current) return
+
+    parentRef.current.style.paddingTop =
+      additionalUI && !printMode ? '40px' : '0'
+  }, [additionalUI])
 
   useEffect(() => {
     const code =
@@ -138,7 +155,7 @@ const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
         resizeObserver = new ResizeObserver(recalcDimensions)
         resizeObserver.observe(container.parentElement!)
 
-        if (panZoomMode && !printMode) {
+        if (panZoomMode && !printMode && additionalUI) {
           setPanZoomInstance(
             SvgPanZoom(diagram, {
               zoomEnabled: true,
@@ -156,14 +173,14 @@ const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
       cancelled = true
       resizeObserver?.disconnect()
     }
-  }, [children, theme, printMode, panZoomMode])
+  }, [children, theme, printMode, panZoomMode, additionalUI])
 
   useEffect(() => {
     if (!panZoomInstance || !containerRef.current) return
 
     const resizeObserver = new ResizeObserver(() => {
       panZoomInstance.resize()
-      panZoomInstance.contain()
+      panZoomInstance.center()
       panZoomInstance.fit()
     })
 
@@ -188,7 +205,7 @@ const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
 
   return (
     <div className="mermaid-diagram" ref={parentRef}>
-      {!printMode && (
+      {!printMode && additionalUI && (
         <MermaidControl
           type={type}
           error={error}
