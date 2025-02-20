@@ -1,8 +1,17 @@
-.codeblock.lang-mermaid pre {
+[data-mermaid-theme='light'] {
   background-size: 20px 20px;
   background-image: radial-gradient(
     circle,
-    rgb(214, 214, 214) 1px,
+    rgba(0, 0, 0, 0.2) 1px,
+    rgba(85, 85, 85, 0) 1px
+  );
+}
+
+[data-mermaid-theme='dark'] {
+  background-size: 20px 20px;
+  background-image: radial-gradient(
+    circle,
+    rgba(222, 222, 222, 0.2) 1px,
     rgba(85, 85, 85, 0) 1px
   );
 }
@@ -95,16 +104,5 @@
         }
       }
     }
-  }
-}
-
-body[class*='dark-mode'] {
-  .codeblock.lang-mermaid pre {
-    background-color: rgb(255, 255, 255);
-    background-image: radial-gradient(
-      circle,
-      rgb(228, 228, 231) 1px,
-      rgba(85, 85, 85, 0) 1px
-    );
   }
 }

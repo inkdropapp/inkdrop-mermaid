@@ -4,6 +4,7 @@ import mermaid from 'mermaid'
 import SvgPanZoom from 'svg-pan-zoom'
 
 import MermaidControl from './MermaidControl'
+import { useDarkMode } from '../utils'
 
 const renderDiagram = async (
   id: string,
@@ -41,7 +42,7 @@ const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
   const observerTheme = useRef<Disposable | null>(null)
   const observerPanZoom = useRef<Disposable | null>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const parrentRef = useRef<HTMLDivElement | null>(null)
+  const parentRef = useRef<HTMLDivElement | null>(null)
 
   const [theme, setTheme] = useState<MermaidConfig['theme']>(
     inkdrop.config.get('mermaid.theme') || 'default'
@@ -55,6 +56,8 @@ const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
     typeof SvgPanZoom
   > | null>(null)
   const [error, setError] = useState<Error | null>(null)
+
+  const isDarkMode = useDarkMode()
 
   useEffect(() => {
     observerTheme.current = inkdrop.config.observe<MermaidConfig['theme']>(
@@ -74,6 +77,19 @@ const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
   }, [])
 
   useEffect(() => {
+    if (!parentRef.current && printMode) return
+
+    const preElement = parentRef.current?.parentElement
+    if (!preElement) return
+
+    if (isDarkMode) {
+      preElement.setAttribute('data-mermaid-theme', 'dark')
+    } else {
+      preElement.setAttribute('data-mermaid-theme', 'light')
+    }
+  }, [isDarkMode])
+
+  useEffect(() => {
     const code =
       typeof children === 'string'
         ? children
@@ -87,7 +103,7 @@ const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
     let resizeObserver: ResizeObserver | null = null
 
     const container = containerRef.current
-    const parrent = parrentRef.current
+    const parrent = parentRef.current
     renderDiagram(id, code, printMode)
       .then(({ svg, diagramType, bindFunctions }) => {
         if (cancelled || !svg.length) return
@@ -147,7 +163,7 @@ const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
 
     const resizeObserver = new ResizeObserver(() => {
       panZoomInstance.resize()
-      panZoomInstance.center()
+      panZoomInstance.contain()
       panZoomInstance.fit()
     })
 
@@ -171,7 +187,7 @@ const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
   }
 
   return (
-    <div className="mermaid-diagram" ref={parrentRef}>
+    <div className="mermaid-diagram" ref={parentRef}>
       {!printMode && (
         <MermaidControl
           type={type}
