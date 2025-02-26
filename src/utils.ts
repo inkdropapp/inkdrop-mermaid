@@ -1,51 +1,48 @@
 import mermaid, { MermaidConfig, RenderResult } from 'mermaid'
-import SvgPanZoom from 'svg-pan-zoom'
 import { useState, useEffect, useRef } from 'react'
 
-export const useDarkMode = () => {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    if (typeof document !== 'undefined' && document.body) {
-      return document.body.classList.contains('dark-mode')
-    }
-    return false
-  })
+// export const useDarkMode = () => {
+//   const [isDarkMode, setIsDarkMode] = useState(() => {
+//     if (typeof document !== 'undefined' && document.body) {
+//       return document.body.classList.contains('dark-mode')
+//     }
+//     return false
+//   })
 
-  useEffect(() => {
-    if (typeof document === 'undefined' || !document.body) return
+//   useEffect(() => {
+//     if (typeof document === 'undefined' || !document.body) return
 
-    const body = document.body
+//     const body = document.body
 
-    const observer = new MutationObserver(mutations => {
-      for (const mutation of mutations) {
-        if (
-          mutation.type === 'attributes' &&
-          mutation.attributeName === 'class'
-        ) {
-          setIsDarkMode(body.classList.contains('dark-mode'))
-        }
-      }
-    })
+//     const observer = new MutationObserver(mutations => {
+//       for (const mutation of mutations) {
+//         if (
+//           mutation.type === 'attributes' &&
+//           mutation.attributeName === 'class'
+//         ) {
+//           setIsDarkMode(body.classList.contains('dark-mode'))
+//         }
+//       }
+//     })
 
-    observer.observe(body, {
-      attributes: true,
-      attributeFilter: ['class']
-    })
+//     observer.observe(body, {
+//       attributes: true,
+//       attributeFilter: ['class']
+//     })
 
-    return () => observer.disconnect()
-  }, [])
+//     return () => observer.disconnect()
+//   }, [])
 
-  return isDarkMode
-}
+//   return isDarkMode
+// }
 
-export const useInkdropConfig = () => {
+export const useConfig = () => {
   const [theme, setTheme] = useState<MermaidConfig['theme']>(
     inkdrop.config.get('mermaid.theme') || 'default'
   )
-  const [panZoomMode, setPanZoomMode] = useState<boolean>(
-    inkdrop.config.get('mermaid.panZoom')
-  )
-  const [additionalUI, setAdditionalUI] = useState<boolean>(
-    inkdrop.config.get('mermaid.additionalUI')
+
+  const [autoScale, setAutoScale] = useState<boolean>(
+    inkdrop.config.get('mermaid.autoScale')
   )
 
   useEffect(() => {
@@ -53,22 +50,17 @@ export const useInkdropConfig = () => {
       'mermaid.theme',
       setTheme
     )
-    const panZoomObserver = inkdrop.config.observe<boolean>(
-      'mermaid.panZoom',
-      setPanZoomMode
-    )
-    const uiObserver = inkdrop.config.observe<boolean>(
-      'mermaid.additionalUI',
-      setAdditionalUI
+    const autoScaleObserver = inkdrop.config.observe<boolean>(
+      'mermaid.autoScale',
+      setAutoScale
     )
     return () => {
       themeObserver.dispose()
-      panZoomObserver.dispose()
-      uiObserver.dispose()
+      autoScaleObserver.dispose()
     }
   }, [])
 
-  return { theme, panZoomMode, additionalUI }
+  return { theme, autoScale }
 }
 
 const renderDiagram = async (
@@ -98,68 +90,30 @@ export const useMermaidRendering = (
   id: string,
   code: string,
   printMode: boolean,
-  panZoomMode: boolean,
-  additionalUI: boolean,
   theme: MermaidConfig['theme']
 ) => {
   const [error, setError] = useState<Error | null>(null)
-  const [diagramType, setDiagramType] = useState<string>('')
-  const [panZoomInstance, setPanZoomInstance] = useState<ReturnType<
-    typeof SvgPanZoom
-  > | null>(null)
 
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const parentRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     if (!code || !containerRef.current) return
     let cancelled = false
-    let resizeObserver: ResizeObserver | null = null
     const container = containerRef.current
-    const parent = parentRef.current
 
     renderDiagram(id, code, printMode)
-      .then(({ svg, diagramType, bindFunctions }) => {
+      .then(({ svg, bindFunctions }) => {
         if (cancelled || !svg.length) return
 
         container.innerHTML = svg
         const diagram = container.querySelector<SVGSVGElement>(`#${id}`)
         if (!diagram) return
 
-        const viewBox = diagram.getAttribute('viewBox')
-        if (!viewBox) return
-        const [, , vbWidth, vbHeight] = viewBox
-          .trim()
-          .split(/[\s,]+/)
-          .map(parseFloat)
-        if ([vbWidth, vbHeight].some(isNaN)) return
-
         diagram.setAttribute('height', '100%')
         diagram.style.display = 'block'
         diagram.style.maxWidth = '100%'
 
         bindFunctions?.(container)
-
-        const recalcDimensions = () => {
-          const parentWidth = parent?.clientWidth || container.clientWidth
-          container.style.width = `${parentWidth}px`
-          container.style.height = `${Math.ceil(parentWidth * (vbHeight / vbWidth))}px`
-        }
-
-        recalcDimensions()
-        resizeObserver = new ResizeObserver(recalcDimensions)
-        resizeObserver.observe(container.parentElement!)
-
-        if (panZoomMode && !printMode && additionalUI) {
-          setPanZoomInstance(
-            SvgPanZoom(diagram, {
-              zoomEnabled: true,
-              mouseWheelZoomEnabled: false
-            })
-          )
-        }
-
-        setDiagramType(diagramType)
         setError(null)
       })
       .catch(err => {
@@ -170,22 +124,8 @@ export const useMermaidRendering = (
 
     return () => {
       cancelled = true
-      resizeObserver?.disconnect()
     }
-  }, [id, code, theme, printMode, panZoomMode, additionalUI])
+  }, [id, code, theme, printMode])
 
-  useEffect(() => {
-    if (!panZoomInstance || !containerRef.current) return
-    const resizeObserver = new ResizeObserver(() => {
-      panZoomInstance.resize()
-      panZoomInstance.center()
-      panZoomInstance.fit()
-    })
-    resizeObserver.observe(containerRef.current)
-    return () => {
-      resizeObserver.disconnect()
-    }
-  }, [panZoomInstance])
-
-  return { error, diagramType, containerRef, parentRef, panZoomInstance }
+  return { error, containerRef }
 }

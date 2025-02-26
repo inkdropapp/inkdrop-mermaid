@@ -1,21 +1,15 @@
 import { lazy } from 'react'
 import { markdownRenderer } from 'inkdrop'
 
-const Mermaid = lazy(() => import('./components/Mermaid'))
+const Mermaid = lazy(() => import('./Mermaid'))
 
 export default {
   config: {
-    additionalUI: {
-      title: 'Additional UI',
+    autoScale: {
+      title: 'Auto Scale',
       type: 'boolean',
-      description: 'Additional UI for the Mermaid diagram',
+      description: 'Automatically shrink diagrams to fit window width',
       default: true
-    },
-    panZoom: {
-      title: 'Pan/Zoom mode',
-      type: 'boolean',
-      description: 'Pan and Zoom mode for the Mermaid diagram',
-      default: false
     },
     theme: {
       title: 'Theme',
@@ -42,6 +36,7 @@ export default {
     }
   },
   deactivate() {
+    // window.mermaid = undefined
     if (markdownRenderer) {
       markdownRenderer.remarkCodeComponents.mermaid = null
     }

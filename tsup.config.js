@@ -13,5 +13,5 @@ export default defineConfig({
     return { js: '.js' }
   },
   treeshake: true,
-  noExternal: ['mermaid', 'svg-pan-zoom']
+  noExternal: ['mermaid']
 })
