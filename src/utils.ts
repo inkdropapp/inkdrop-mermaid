@@ -110,8 +110,6 @@ export const useMermaidRendering = (
         if (!diagram) return
 
         diagram.setAttribute('height', '100%')
-        diagram.style.display = 'block'
-        diagram.style.maxWidth = '100%'
 
         bindFunctions?.(container)
         setError(null)
