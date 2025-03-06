@@ -36,7 +36,6 @@ export default {
     }
   },
   deactivate() {
-    // window.mermaid = undefined
     if (markdownRenderer) {
       markdownRenderer.remarkCodeComponents.mermaid = null
     }
