@@ -17,10 +17,9 @@
     "dev": "tsup --watch",
     "build": "tsup"
   },
-  "dependencies": {
-    "mermaid": "^11.4.1"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "mermaid": "^11.4.1",
     "@eslint/js": "^9.20.0",
     "@types/node": "^22.13.4",
     "@types/react": "^19.0.8",
