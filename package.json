@@ -3,7 +3,7 @@
   "description": "Lets you draw diagrams and flowcharts with Mermaid",
   "main": "./lib/index",
   "type": "module",
-  "version": "2.8.0",
+  "version": "2.9.0",
   "keywords": [
     "inkdrop",
     "mermaid"
