@@ -88,6 +88,12 @@ More details can be found on [the Mermaid documentation](https://mermaid-js.gith
 
 ## Changelog
 
+### 2.9.0 [Mar 7, 2025]
+
+- Bump up Mermaid to [v11.4.1](https://github.com/mermaid-js/mermaid/releases/tag/mermaid%4011.4.1) (Thanks [@inkwadra](https://github.com/inkdropapp/inkdrop-mermaid/pull/26))
+  - Also check out release notes on [v11.0.0](https://github.com/mermaid-js/mermaid/releases/tag/v11.0.0)
+  - Supports [Architecture Diagrams Documentation](https://mermaid.js.org/syntax/architecture.html)
+
 ### 2.8.0 [Nov 18, 2024]
 
 - Bump up Mermaid to [v10.9.3](https://github.com/mermaid-js/mermaid/releases/tag/v10.9.3)
