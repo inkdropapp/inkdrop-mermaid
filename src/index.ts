@@ -15,7 +15,7 @@ export default {
       title: 'Theme',
       type: 'string',
       default: 'forest',
-      enum: ['forest', 'default', 'neutral', 'dark', 'base', 'null']
+      enum: ['forest', 'default', 'neutral', 'dark', 'base']
     },
     themeCSS: {
       title: 'Custom theme CSS',
