@@ -10,7 +10,7 @@ export default defineConfig({
   sourcemap: true,
   clean: true,
   outExtension() {
-    return { js: '.js' }
+    return { js: '.cjs' }
   },
   treeshake: true,
   noExternal: ['mermaid']

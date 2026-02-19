@@ -3,8 +3,18 @@ interface Disposable {
 }
 
 declare namespace Inkdrop {
+  interface PluginConfigEntry {
+    title: string
+    type: 'string' | 'boolean' | 'integer' | 'number'
+    default?: unknown
+    description?: string
+    enum?: string[]
+    minimum?: number
+    maximum?: number
+  }
+
   interface Plugin {
-    config: Record<string, unknown>
+    config: Record<string, PluginConfigEntry>
     activate(): void
     deactivate(): void
   }
@@ -16,7 +26,7 @@ declare namespace Inkdrop {
       title?: string
       fenced?: boolean
       className?: string
-      children: string[]
+      children: string | string[]
     }
 
     interface RemarkCodeComponents {

@@ -3,11 +3,11 @@ import { useState, useEffect, useRef } from 'react'
 
 export const useConfig = () => {
   const [theme, setTheme] = useState<MermaidConfig['theme']>(
-    inkdrop.config.get('mermaid.theme') || 'default'
+    inkdrop.config.get('mermaid.theme') || 'forest'
   )
 
   const [autoScale, setAutoScale] = useState<boolean>(
-    inkdrop.config.get('mermaid.autoScale')
+    inkdrop.config.get('mermaid.autoScale') ?? true
   )
 
   useEffect(() => {
@@ -28,19 +28,43 @@ export const useConfig = () => {
   return { theme, autoScale }
 }
 
+let lastInitConfig = ''
+
+const ensureMermaidInitialized = (printMode: boolean) => {
+  const theme = printMode
+    ? 'default'
+    : inkdrop.config.get('mermaid.theme') || 'forest'
+  const themeCSS = inkdrop.config.get('mermaid.themeCSS') || ''
+  const themeVariablesRaw =
+    inkdrop.config.get<string>('mermaid.themeVariables') || '{}'
+
+  const configKey = `${theme}:${themeCSS}:${themeVariablesRaw}:${printMode}`
+  if (configKey === lastInitConfig) return
+
+  let themeVariables: Record<string, unknown>
+  try {
+    themeVariables = JSON.parse(themeVariablesRaw)
+  } catch {
+    throw new Error(
+      `Invalid JSON in 'Custom theme variables' setting: ${themeVariablesRaw}`
+    )
+  }
+
+  mermaid.initialize({
+    startOnLoad: false,
+    theme,
+    themeCSS,
+    themeVariables
+  })
+  lastInitConfig = configKey
+}
+
 const renderDiagram = async (
   id: string,
   code: string,
   printMode: boolean
 ): Promise<RenderResult> => {
-  mermaid.initialize({
-    startOnLoad: false,
-    theme: printMode ? 'default' : inkdrop.config.get('mermaid.theme'),
-    themeCSS: inkdrop.config.get('mermaid.themeCSS'),
-    themeVariables: JSON.parse(
-      inkdrop.config.get<string>('mermaid.themeVariables') || '{}'
-    )
-  })
+  ensureMermaidInitialized(printMode)
   try {
     return await mermaid.render(id, code)
   } catch (err) {
@@ -70,6 +94,8 @@ export const useMermaidRendering = (
       .then(({ svg, bindFunctions }) => {
         if (cancelled || !svg.length) return
 
+        // Security note: SVG is sanitised by Mermaid's DOMPurify layer.
+        // Keep Mermaid pinned to a known-safe version and audit updates.
         container.innerHTML = svg
         const diagram = container.querySelector<SVGSVGElement>(`#${id}`)
         if (!diagram) return
@@ -81,6 +107,7 @@ export const useMermaidRendering = (
       })
       .catch(err => {
         if (!cancelled) {
+          container.innerHTML = ''
           setError(err)
         }
       })

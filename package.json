@@ -1,7 +1,7 @@
 {
   "name": "mermaid",
   "description": "Lets you draw diagrams and flowcharts with Mermaid",
-  "main": "./lib/index",
+  "main": "./lib/index.cjs",
   "type": "module",
   "version": "2.9.0",
   "keywords": [
@@ -22,7 +22,7 @@
     "mermaid": "11.4.1",
     "@eslint/js": "^9.20.0",
     "@types/node": "^22.13.4",
-    "@types/react": "^19.0.8",
+    "@types/react": "^18.3.0",
     "eslint": "^9.20.1",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.3",

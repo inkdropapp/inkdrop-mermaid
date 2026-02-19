@@ -1,7 +1,10 @@
-import { lazy } from 'react'
+import { lazy, Suspense, createElement } from 'react'
 import { markdownRenderer } from 'inkdrop'
 
-const Mermaid = lazy(() => import('./Mermaid'))
+const MermaidLazy = lazy(() => import('./Mermaid'))
+
+const Mermaid = (props: CodeComponentProps) =>
+  createElement(Suspense, { fallback: null }, createElement(MermaidLazy, props))
 
 export default {
   config: {
@@ -14,6 +17,7 @@ export default {
     theme: {
       title: 'Theme',
       type: 'string',
+      description: 'Mermaid diagram colour theme',
       default: 'forest',
       enum: ['forest', 'default', 'neutral', 'dark', 'base']
     },
