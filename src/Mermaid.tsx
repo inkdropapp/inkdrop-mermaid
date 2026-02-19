@@ -1,15 +1,10 @@
 import React, { useContext, useMemo } from 'react'
 import { useConfig, useMermaidRendering } from './utils'
 
+let idCounter = Date.now()
+
 const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
-  const id = useMemo(
-    () =>
-      `mermaid-${Math.random()
-        .toString(36)
-        .replace(/[^a-z]+/g, '')
-        .substring(0, 5)}`,
-    []
-  )
+  const id = useMemo(() => `mermaid-${idCounter++}`, [])
 
   const code = useMemo(() => {
     if (typeof children === 'string') return children

@@ -10,7 +10,7 @@ export default eslintTs.config(
   eslintReact.configs.flat['jsx-runtime'],
   eslintPrettier,
   {
-    ignores: ['**/node_modules/*', '/lib/**/*.js'],
+    ignores: ['**/node_modules/**', '/lib/**'],
     settings: { react: { version: '18' } }
   }
 )
