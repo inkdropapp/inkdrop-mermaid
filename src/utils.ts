@@ -81,6 +81,7 @@ export const useMermaidRendering = (
       })
       .catch(err => {
         if (!cancelled) {
+          container.innerHTML = ''
           setError(err)
         }
       })
