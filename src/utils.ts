@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 
 export const useConfig = () => {
   const [theme, setTheme] = useState<MermaidConfig['theme']>(
-    inkdrop.config.get('mermaid.theme') || 'default'
+    inkdrop.config.get('mermaid.theme')
   )
 
   const [autoScale, setAutoScale] = useState<boolean>(

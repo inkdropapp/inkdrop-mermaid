@@ -15,6 +15,7 @@ export default {
       title: 'Theme',
       type: 'string',
       default: 'forest',
+      description: 'Mermaid diagram colour theme',
       enum: ['forest', 'default', 'neutral', 'dark', 'base']
     },
     themeCSS: {
