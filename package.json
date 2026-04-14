@@ -2,6 +2,7 @@
   "name": "mermaid",
   "description": "Lets you draw diagrams and flowcharts with Mermaid",
   "main": "./lib/index",
+  "builtin": true,
   "type": "module",
   "version": "2.9.0",
   "keywords": [
