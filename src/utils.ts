@@ -47,7 +47,7 @@ const renderDiagram = async (
     if (err instanceof Error) {
       throw err
     }
-    throw new Error('Unknown error')
+    throw new Error('Unknown error', { cause: err })
   }
 }
 
