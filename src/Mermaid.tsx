@@ -1,7 +1,10 @@
 import React, { useContext, useMemo } from 'react'
+import type { CodeComponentProps } from '@inkdropapp/types'
+import { getEnv } from './env'
 import { useConfig, useMermaidRendering } from './utils'
 
 const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
+  const { markdownRenderer } = getEnv()
   const id = useMemo(
     () =>
       `mermaid-${Math.random()
@@ -19,9 +22,7 @@ const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
   }, [children])
 
   const { theme, autoScale } = useConfig()
-
-  const { printMode } = useContext(inkdrop.markdownRenderer.Context)
-
+  const { printMode } = useContext(markdownRenderer.Context)
   const { error, containerRef } = useMermaidRendering(
     id,
     code,

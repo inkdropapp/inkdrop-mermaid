@@ -1,24 +1,20 @@
 import mermaid, { MermaidConfig, RenderResult } from 'mermaid'
 import { useState, useEffect, useRef } from 'react'
+import { getEnv } from './env'
 
 export const useConfig = () => {
-  const [theme, setTheme] = useState<MermaidConfig['theme']>(
-    inkdrop.config.get('mermaid.theme')
-  )
+  const { config } = getEnv()
 
+  const [theme, setTheme] = useState<MermaidConfig['theme']>(
+    config.get('mermaid.theme')
+  )
   const [autoScale, setAutoScale] = useState<boolean>(
-    inkdrop.config.get('mermaid.autoScale')
+    config.get('mermaid.autoScale')
   )
 
   useEffect(() => {
-    const themeObserver = inkdrop.config.observe<MermaidConfig['theme']>(
-      'mermaid.theme',
-      setTheme
-    )
-    const autoScaleObserver = inkdrop.config.observe<boolean>(
-      'mermaid.autoScale',
-      setAutoScale
-    )
+    const themeObserver = config.observe('mermaid.theme', setTheme)
+    const autoScaleObserver = config.observe('mermaid.autoScale', setAutoScale)
     return () => {
       themeObserver.dispose()
       autoScaleObserver.dispose()
@@ -33,13 +29,12 @@ const renderDiagram = async (
   code: string,
   printMode: boolean
 ): Promise<RenderResult> => {
+  const { config } = getEnv()
   mermaid.initialize({
     startOnLoad: false,
-    theme: printMode ? 'default' : inkdrop.config.get('mermaid.theme'),
-    themeCSS: inkdrop.config.get('mermaid.themeCSS'),
-    themeVariables: JSON.parse(
-      inkdrop.config.get<string>('mermaid.themeVariables') || '{}'
-    )
+    theme: printMode ? 'default' : config.get('mermaid.theme'),
+    themeCSS: config.get('mermaid.themeCSS'),
+    themeVariables: JSON.parse(config.get('mermaid.themeVariables') || '{}')
   })
   try {
     return await mermaid.render(id, code)

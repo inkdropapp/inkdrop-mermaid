@@ -1,10 +1,15 @@
 import { lazy } from 'react'
-import { markdownRenderer } from 'inkdrop'
+import type {
+  ConfigSchema,
+  Environment,
+  IInkdropPlugin
+} from '@inkdropapp/types'
+import { setEnv } from './env'
 
 const Mermaid = lazy(() => import('./Mermaid'))
 
-export default {
-  config: {
+class InkdropPlugin implements IInkdropPlugin {
+  config: Record<string, ConfigSchema> = {
     autoScale: {
       title: 'Auto Scale',
       type: 'boolean',
@@ -30,15 +35,21 @@ export default {
       description: 'Example: { "primaryColor": "#ff0000" }',
       default: '{}'
     }
-  },
-  activate() {
-    if (markdownRenderer) {
-      markdownRenderer.remarkCodeComponents.mermaid = Mermaid
-    }
-  },
-  deactivate() {
-    if (markdownRenderer) {
-      markdownRenderer.remarkCodeComponents.mermaid = null
+  }
+
+  activate(env: Environment) {
+    setEnv(env)
+    if (env.markdownRenderer) {
+      env.markdownRenderer.remarkCodeComponents.mermaid = Mermaid
     }
   }
-} satisfies Inkdrop.Plugin
+
+  deactivate(env: Environment) {
+    if (env.markdownRenderer) {
+      env.markdownRenderer.remarkCodeComponents.mermaid = null
+    }
+    setEnv(undefined)
+  }
+}
+
+export default new InkdropPlugin()

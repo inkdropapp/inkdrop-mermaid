@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@inkdropapp/types": "^0.0.7",
     "@types/node": "^25.9.1",
     "@types/react": "^19.2.15",
     "eslint": "^10.4.0",
