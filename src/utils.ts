@@ -32,6 +32,7 @@ const renderDiagram = async (
   const { config } = getEnv()
   mermaid.initialize({
     startOnLoad: false,
+    suppressErrorRendering: true,
     theme: printMode ? 'default' : config.get('mermaid.theme'),
     themeCSS: config.get('mermaid.themeCSS'),
     themeVariables: JSON.parse(config.get('mermaid.themeVariables') || '{}')
