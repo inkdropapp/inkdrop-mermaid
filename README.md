@@ -88,6 +88,10 @@ More details can be found on [the Mermaid documentation](https://mermaid-js.gith
 
 ## Changelog
 
+### 2.10.1 [May 31, 2026]
+
+- Fix code-splitting so the Mermaid library is loaded lazily on first diagram render instead of at app startup
+
 ### 2.10.0 [May 31, 2026]
 
 - Bump up Mermaid to [v11.15.0](https://github.com/mermaid-js/mermaid/releases/tag/mermaid%4011.15.0)
