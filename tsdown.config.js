@@ -10,10 +10,23 @@ export default defineConfig({
   outExtensions: () => ({ js: '.js' }),
   treeshake: true,
   deps: {
-    neverBundle: ['react', 'inkdrop'],
+    neverBundle: ['react', 'react/jsx-runtime', 'inkdrop'],
     alwaysBundle: ['mermaid']
   },
   outputOptions: {
-    inlineDynamicImports: true
+    codeSplitting: {
+      groups: [
+        {
+          name: 'env',
+          test: /[\\/]src[\\/]env\./,
+          priority: 20
+        },
+        {
+          name: 'mermaid',
+          test: /node_modules|[\\/]src[\\/](Mermaid|utils)\./,
+          priority: 10
+        }
+      ]
+    }
   }
 })
