@@ -88,6 +88,12 @@ More details can be found on [the Mermaid documentation](https://mermaid-js.gith
 
 ## Changelog
 
+### 2.10.0 [May 31, 2026]
+
+- Bump up Mermaid to [v11.15.0](https://github.com/mermaid-js/mermaid/releases/tag/mermaid%4011.15.0)
+- Suppress Mermaid's built-in error rendering and clear the container on render failures
+- Clean up the Mermaid tooltip
+
 ### 2.9.0 [Mar 7, 2025]
 
 - Bump up Mermaid to [v11.4.1](https://github.com/mermaid-js/mermaid/releases/tag/mermaid%4011.4.1) (Thanks [@inkwadra](https://github.com/inkdropapp/inkdrop-mermaid/pull/26))
