@@ -84,6 +84,10 @@ export const useMermaidRendering = (
 
     return () => {
       cancelled = true
+      container.innerHTML = ''
+      document
+        .querySelectorAll('body > div.mermaidTooltip')
+        .forEach(el => el.remove())
     }
   }, [id, code, theme, printMode])
 
