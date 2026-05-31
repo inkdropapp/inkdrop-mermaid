@@ -38,15 +38,17 @@ class InkdropPlugin implements IInkdropPlugin {
   }
 
   activate(env: Environment) {
-    setEnv(env)
-    if (env.markdownRenderer) {
-      env.markdownRenderer.remarkCodeComponents.mermaid = Mermaid
+    const app = env?.appVersion ? env : inkdrop // backward compatibility for v5
+    setEnv(app)
+    if (app.markdownRenderer) {
+      app.markdownRenderer.remarkCodeComponents.mermaid = Mermaid
     }
   }
 
   deactivate(env: Environment) {
-    if (env.markdownRenderer) {
-      env.markdownRenderer.remarkCodeComponents.mermaid = null
+    const app = env?.appVersion ? env : inkdrop // backward compatibility for v5
+    if (app.markdownRenderer) {
+      app.markdownRenderer.remarkCodeComponents.mermaid = null
     }
     setEnv(undefined)
   }
