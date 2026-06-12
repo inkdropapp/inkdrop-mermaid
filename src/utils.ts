@@ -1,16 +1,13 @@
 import mermaid, { MermaidConfig, RenderResult } from 'mermaid'
 import { useState, useEffect, useRef } from 'react'
+
 import { getEnv } from './env'
 
 export const useConfig = () => {
   const { config } = getEnv()
 
-  const [theme, setTheme] = useState<MermaidConfig['theme']>(
-    config.get('mermaid.theme')
-  )
-  const [autoScale, setAutoScale] = useState<boolean>(
-    config.get('mermaid.autoScale')
-  )
+  const [theme, setTheme] = useState<MermaidConfig['theme']>(config.get('mermaid.theme'))
+  const [autoScale, setAutoScale] = useState<boolean>(config.get('mermaid.autoScale'))
 
   useEffect(() => {
     const themeObserver = config.observe('mermaid.theme', setTheme)
@@ -19,7 +16,7 @@ export const useConfig = () => {
       themeObserver.dispose()
       autoScaleObserver.dispose()
     }
-  }, [])
+  }, [config])
 
   return { theme, autoScale }
 }
@@ -85,9 +82,7 @@ export const useMermaidRendering = (
     return () => {
       cancelled = true
       container.innerHTML = ''
-      document
-        .querySelectorAll('body > div.mermaidTooltip')
-        .forEach(el => el.remove())
+      document.querySelectorAll('body > div.mermaidTooltip').forEach(el => el.remove())
     }
   }, [id, code, theme, printMode])
 

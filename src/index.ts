@@ -1,9 +1,6 @@
+import type { ConfigSchema, Environment, IInkdropPlugin } from '@inkdropapp/types'
 import { lazy } from 'react'
-import type {
-  ConfigSchema,
-  Environment,
-  IInkdropPlugin
-} from '@inkdropapp/types'
+
 import { setEnv } from './env'
 
 const Mermaid = lazy(() => import('./Mermaid'))

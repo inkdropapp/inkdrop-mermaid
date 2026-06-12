@@ -1,5 +1,6 @@
-import React, { useContext, useMemo } from 'react'
 import type { CodeComponentProps } from '@inkdropapp/types'
+import React, { useContext, useMemo } from 'react'
+
 import { getEnv } from './env'
 import { useConfig, useMermaidRendering } from './utils'
 
@@ -16,24 +17,16 @@ const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
 
   const code = useMemo(() => {
     if (typeof children === 'string') return children
-    if (Array.isArray(children) && typeof children[0] === 'string')
-      return children[0]
+    if (Array.isArray(children) && typeof children[0] === 'string') return children[0]
     return ''
   }, [children])
 
   const { theme, autoScale } = useConfig()
   const { printMode } = useContext(markdownRenderer.Context)
-  const { error, containerRef } = useMermaidRendering(
-    id,
-    code,
-    printMode,
-    theme
-  )
+  const { error, containerRef } = useMermaidRendering(id, code, printMode, theme)
 
   return (
-    <div
-      className={`mermaid-diagram theme-${theme} ${autoScale ? '' : 'disable-auto-scale'}`}
-    >
+    <div className={`mermaid-diagram theme-${theme} ${autoScale ? '' : 'disable-auto-scale'}`}>
       <div ref={containerRef} />
       {error && (
         <div className="ui error message">
