@@ -17,13 +17,13 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@inkdropapp/types": "^0.0.7",
-    "@types/node": "^25.9.1",
-    "@types/react": "^19.2.15",
+    "@inkdropapp/types": "^0.0.8",
+    "@types/node": "^25.9.3",
+    "@types/react": "^19.2.17",
     "mermaid": "11.15.0",
     "oxfmt": "0.54.0",
     "oxlint": "1.69.0",
-    "tsdown": "^0.22.0",
+    "tsdown": "^0.22.2",
     "typescript": "^6.0.3"
   },
   "engines": {
