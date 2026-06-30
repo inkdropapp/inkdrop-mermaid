@@ -11,7 +11,7 @@ export default defineConfig({
   treeshake: true,
   deps: {
     neverBundle: ['react', 'react/jsx-runtime', 'inkdrop'],
-    alwaysBundle: ['mermaid']
+    alwaysBundle: ['mermaid', 'panzoom']
   },
   outputOptions: {
     codeSplitting: {
@@ -23,7 +23,7 @@ export default defineConfig({
         },
         {
           name: 'mermaid',
-          test: /node_modules|[\\/]src[\\/](Mermaid|utils)\./,
+          test: /node_modules|[\\/]src[\\/](Mermaid|utils|usePanZoom|MermaidToolbar|useDarkMode|theme)\./,
           priority: 10
         }
       ]

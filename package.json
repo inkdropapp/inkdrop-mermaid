@@ -23,6 +23,7 @@
     "mermaid": "11.15.0",
     "oxfmt": "0.54.0",
     "oxlint": "1.69.0",
+    "panzoom": "9.4.4",
     "tsdown": "^0.22.2",
     "typescript": "^6.0.3"
   },
