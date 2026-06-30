@@ -3,7 +3,7 @@ import { lazy } from 'react'
 
 import { setEnv } from './env'
 
-const Mermaid = lazy(() => import('./Mermaid'))
+const Mermaid = lazy(() => import('./mermaid'))
 
 class InkdropPlugin implements IInkdropPlugin {
   config: Record<string, ConfigSchema> = {
@@ -11,6 +11,12 @@ class InkdropPlugin implements IInkdropPlugin {
       title: 'Pan & Zoom',
       type: 'boolean',
       description: 'Drag to pan and Ctrl/Cmd + scroll to zoom rendered diagrams',
+      default: true
+    },
+    toolbar: {
+      title: 'Toolbar',
+      type: 'boolean',
+      description: 'Show a hover toolbar with the diagram type and zoom controls',
       default: true
     },
     theme: {

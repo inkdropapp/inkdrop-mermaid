@@ -54,7 +54,6 @@ export const useMermaidRendering = (
   theme: MermaidConfig['theme']
 ) => {
   const [error, setError] = useState<Error | null>(null)
-  const [diagramType, setDiagramType] = useState<string | null>(null)
   // Bumped after every successful render so downstream hooks (e.g. pan/zoom)
   // can re-attach to the freshly injected SVG without diffing the DOM.
   const [renderNonce, setRenderNonce] = useState(0)
@@ -67,7 +66,7 @@ export const useMermaidRendering = (
     const container = containerRef.current
 
     renderDiagram(id, code, printMode)
-      .then(({ svg, bindFunctions, diagramType: type }) => {
+      .then(({ svg, bindFunctions }) => {
         if (cancelled || !svg.length) return
 
         container.innerHTML = svg
@@ -75,14 +74,12 @@ export const useMermaidRendering = (
         if (!diagram) return
 
         bindFunctions?.(container)
-        setDiagramType(type)
         setError(null)
         setRenderNonce(nonce => nonce + 1)
       })
       .catch(err => {
         if (!cancelled) {
           container.innerHTML = ''
-          setDiagramType(null)
           setError(err)
         }
       })
@@ -94,5 +91,5 @@ export const useMermaidRendering = (
     }
   }, [id, code, theme, printMode])
 
-  return { error, containerRef, diagramType, renderNonce }
+  return { error, containerRef, renderNonce }
 }
