@@ -23,7 +23,7 @@ export default defineConfig({
         },
         {
           name: 'mermaid',
-          test: /node_modules|[\\/]src[\\/](Mermaid|utils|usePanZoom|MermaidToolbar|useDarkMode|theme)\./,
+          test: /node_modules|[\\/]src[\\/](Mermaid|utils|use-panzoom|MermaidToolbar|useDarkMode|theme)\./,
           priority: 10
         }
       ]

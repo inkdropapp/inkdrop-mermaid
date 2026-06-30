@@ -2,6 +2,7 @@ import type { CodeComponentProps } from '@inkdropapp/types'
 import React, { useContext, useMemo } from 'react'
 
 import { getEnv } from './env'
+import { usePanZoom } from './use-panzoom'
 import { useConfig, useMermaidRendering } from './utils'
 
 const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
@@ -21,9 +22,11 @@ const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
     return ''
   }, [children])
 
-  const { theme, autoScale } = useConfig()
+  const { theme, autoScale, panZoom } = useConfig()
   const { printMode } = useContext(markdownRenderer.Context)
-  const { error, containerRef } = useMermaidRendering(id, code, printMode, theme)
+  const { error, containerRef, renderNonce } = useMermaidRendering(id, code, printMode, theme)
+
+  usePanZoom(containerRef, renderNonce, panZoom && !printMode)
 
   return (
     <div className={`mermaid-diagram theme-${theme} ${autoScale ? '' : 'disable-auto-scale'}`}>

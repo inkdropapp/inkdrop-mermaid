@@ -18,13 +18,13 @@
   },
   "devDependencies": {
     "@inkdropapp/types": "^0.0.8",
-    "@types/node": "^25.9.3",
+    "@types/node": "^26.0.1",
     "@types/react": "^19.2.17",
-    "mermaid": "11.15.0",
-    "oxfmt": "0.54.0",
-    "oxlint": "1.69.0",
+    "mermaid": "11.16.0",
+    "oxfmt": "0.56.0",
+    "oxlint": "1.71.0",
     "panzoom": "9.4.4",
-    "tsdown": "^0.22.2",
+    "tsdown": "^0.22.3",
     "typescript": "^6.0.3"
   },
   "engines": {

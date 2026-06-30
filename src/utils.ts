@@ -77,8 +77,6 @@ export const useMermaidRendering = (
         const diagram = container.querySelector<SVGSVGElement>(`#${id}`)
         if (!diagram) return
 
-        diagram.setAttribute('height', '100%')
-
         bindFunctions?.(container)
         setDiagramType(type)
         setError(null)
