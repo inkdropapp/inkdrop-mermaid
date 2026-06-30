@@ -44,6 +44,15 @@ It will be rendered as:
 
 ![Sequence diagram example](https://github.com/inkdropapp/inkdrop-mermaid/raw/master/docs/images/example-02.png)
 
+## Pan & Zoom
+
+Rendered diagrams are interactive:
+
+- **Drag** to pan.
+- **Ctrl/Cmd + scroll** to zoom in and out (a plain scroll still scrolls the note).
+
+Enabled by default — turn it off with the **Pan & Zoom** option in Preferences.
+
 ## Customizations
 
 You can configure mermaid options in Preferences.
