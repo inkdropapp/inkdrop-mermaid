@@ -46,3 +46,71 @@ export const ResetIcon: React.FC<React.SVGProps<SVGSVGElement>> = props => (
     />
   </svg>
 )
+
+export const ExpandIcon: React.FC<React.SVGProps<SVGSVGElement>> = props => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 14 14"
+    fill="none"
+    {...props}
+  >
+    <path
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.4}
+      d="m1 13 4 -4"
+    />
+    <path
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.4}
+      d="M13 1 9 5"
+    />
+    <path
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.4}
+      d="m1 1 4 4"
+    />
+    <path
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.4}
+      d="M13 13 9 9"
+    />
+    <path
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.4}
+      d="M13 5.00004c0.5 -1.50004 0.5 -2.50004 0 -4 -1.5 -0.500045 -2.5 -0.500059 -4 0"
+    />
+    <path
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.4}
+      d="M1.00003 9c-0.500033 1.5 -0.500042 2.5 -0.00001 4 1.49998 0.5 2.49998 0.5 4 0"
+    />
+    <path
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.4}
+      d="M1.00001 5.00004C0.5 3.5 0.5 2.5 1 1.00004c1.5 -0.500045 2.5 -0.500059 4 0"
+    />
+    <path
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.4}
+      d="M13 9c0.5 1.5 0.5 2.5 0 4 -1.5 0.5 -2.5 0.5 -4.00002 0"
+    />
+  </svg>
+)

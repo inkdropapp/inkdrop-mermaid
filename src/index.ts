@@ -2,6 +2,7 @@ import type { ConfigSchema, Environment, IInkdropPlugin } from '@inkdropapp/type
 import { lazy } from 'react'
 
 import { setEnv } from './env'
+import { MermaidFullscreen } from './mermaid-fullscreen'
 
 const Mermaid = lazy(() => import('./mermaid'))
 
@@ -46,6 +47,8 @@ class InkdropPlugin implements IInkdropPlugin {
     if (app.markdownRenderer) {
       app.markdownRenderer.remarkCodeComponents.mermaid = Mermaid
     }
+    app.components.registerClass(MermaidFullscreen, 'MermaidFullscreen')
+    app.layouts.addComponentToLayout('modal', 'MermaidFullscreen')
   }
 
   deactivate(env: Environment) {
@@ -53,6 +56,8 @@ class InkdropPlugin implements IInkdropPlugin {
     if (app.markdownRenderer) {
       app.markdownRenderer.remarkCodeComponents.mermaid = null
     }
+    app.layouts.removeComponentFromLayout('modal', 'MermaidFullscreen')
+    app.components.deleteClass(MermaidFullscreen, 'MermaidFullscreen')
     setEnv(undefined)
   }
 }

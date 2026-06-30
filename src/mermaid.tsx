@@ -2,12 +2,13 @@ import type { CodeComponentProps } from '@inkdropapp/types'
 import React, { useContext, useMemo } from 'react'
 
 import { getEnv } from './env'
+import type { MermaidCommands } from './mermaid-fullscreen'
 import { MermaidToolbar } from './mermaid-toolbar'
 import { usePanZoom } from './use-panzoom'
 import { useConfig, useMermaidRendering } from './utils'
 
 const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
-  const { markdownRenderer } = getEnv()
+  const { markdownRenderer, commands } = getEnv()
   const id = useMemo(
     () =>
       `mermaid-${Math.random()
@@ -29,13 +30,25 @@ const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
 
   const controls = usePanZoom(containerRef, renderNonce, panZoom && !printMode)
 
+  const openFullscreen = () =>
+    commands.dispatch<MermaidCommands>(
+      containerRef.current ?? document.body,
+      'mermaid:open-fullscreen',
+      { code, theme, panZoom }
+    )
+
   return (
     <div className={`mermaid-diagram theme-${theme}`}>
       <div className="mermaid-diagram-content">
         <div ref={containerRef} />
       </div>
       {toolbar && !printMode && (
-        <MermaidToolbar error={error} panZoom={panZoom} controls={controls} />
+        <MermaidToolbar
+          error={error}
+          panZoom={panZoom}
+          controls={controls}
+          onExpand={openFullscreen}
+        />
       )}
       {error && (
         <div className="ui error message">
