@@ -13,12 +13,6 @@ class InkdropPlugin implements IInkdropPlugin {
       description: 'Automatically shrink diagrams to fit window width',
       default: true
     },
-    toolbar: {
-      title: 'Toolbar',
-      type: 'boolean',
-      description: 'Show the floating zoom/reset toolbar and diagram-type badge on hover',
-      default: true
-    },
     panZoom: {
       title: 'Pan & Zoom',
       type: 'boolean',
@@ -30,7 +24,7 @@ class InkdropPlugin implements IInkdropPlugin {
       type: 'string',
       default: 'forest',
       description: 'Mermaid diagram colour theme',
-      enum: ['forest', 'default', 'neutral', 'dark', 'base', 'inkdrop']
+      enum: ['forest', 'default', 'neutral', 'dark', 'base']
     },
     themeCSS: {
       title: 'Custom theme CSS',
