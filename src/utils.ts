@@ -8,17 +8,23 @@ export const useConfig = () => {
 
   const [theme, setTheme] = useState<MermaidConfig['theme']>(config.get('mermaid.theme'))
   const [autoScale, setAutoScale] = useState<boolean>(config.get('mermaid.autoScale'))
+  const [toolbar, setToolbar] = useState<boolean>(config.get('mermaid.toolbar'))
+  const [panZoom, setPanZoom] = useState<boolean>(config.get('mermaid.panZoom'))
 
   useEffect(() => {
     const themeObserver = config.observe('mermaid.theme', setTheme)
     const autoScaleObserver = config.observe('mermaid.autoScale', setAutoScale)
+    const toolbarObserver = config.observe('mermaid.toolbar', setToolbar)
+    const panZoomObserver = config.observe('mermaid.panZoom', setPanZoom)
     return () => {
       themeObserver.dispose()
       autoScaleObserver.dispose()
+      toolbarObserver.dispose()
+      panZoomObserver.dispose()
     }
   }, [config])
 
-  return { theme, autoScale }
+  return { theme, autoScale, toolbar, panZoom }
 }
 
 const renderDiagram = async (
@@ -51,6 +57,10 @@ export const useMermaidRendering = (
   theme: MermaidConfig['theme']
 ) => {
   const [error, setError] = useState<Error | null>(null)
+  const [diagramType, setDiagramType] = useState<string | null>(null)
+  // Bumped after every successful render so downstream hooks (e.g. pan/zoom)
+  // can re-attach to the freshly injected SVG without diffing the DOM.
+  const [renderNonce, setRenderNonce] = useState(0)
 
   const containerRef = useRef<HTMLDivElement | null>(null)
 
@@ -60,21 +70,22 @@ export const useMermaidRendering = (
     const container = containerRef.current
 
     renderDiagram(id, code, printMode)
-      .then(({ svg, bindFunctions }) => {
+      .then(({ svg, bindFunctions, diagramType: type }) => {
         if (cancelled || !svg.length) return
 
         container.innerHTML = svg
         const diagram = container.querySelector<SVGSVGElement>(`#${id}`)
         if (!diagram) return
 
-        diagram.setAttribute('height', '100%')
-
         bindFunctions?.(container)
+        setDiagramType(type)
         setError(null)
+        setRenderNonce(nonce => nonce + 1)
       })
       .catch(err => {
         if (!cancelled) {
           container.innerHTML = ''
+          setDiagramType(null)
           setError(err)
         }
       })
@@ -86,5 +97,5 @@ export const useMermaidRendering = (
     }
   }, [id, code, theme, printMode])
 
-  return { error, containerRef }
+  return { error, containerRef, diagramType, renderNonce }
 }
