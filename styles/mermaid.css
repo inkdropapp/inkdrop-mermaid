@@ -19,11 +19,3 @@ body .mermaid-diagram.theme-neutral {
 body .mermaid-diagram.theme-dark {
   background-color: transparent;
 }
-
-body .mermaid-diagram.disable-auto-scale {
-  overflow: auto;
-
-  svg {
-    width: auto !important;
-  }
-}

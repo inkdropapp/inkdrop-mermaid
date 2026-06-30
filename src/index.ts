@@ -7,12 +7,6 @@ const Mermaid = lazy(() => import('./Mermaid'))
 
 class InkdropPlugin implements IInkdropPlugin {
   config: Record<string, ConfigSchema> = {
-    autoScale: {
-      title: 'Auto Scale',
-      type: 'boolean',
-      description: 'Automatically shrink diagrams to fit window width',
-      default: true
-    },
     panZoom: {
       title: 'Pan & Zoom',
       type: 'boolean',

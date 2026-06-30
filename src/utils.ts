@@ -7,24 +7,21 @@ export const useConfig = () => {
   const { config } = getEnv()
 
   const [theme, setTheme] = useState<MermaidConfig['theme']>(config.get('mermaid.theme'))
-  const [autoScale, setAutoScale] = useState<boolean>(config.get('mermaid.autoScale'))
   const [toolbar, setToolbar] = useState<boolean>(config.get('mermaid.toolbar'))
   const [panZoom, setPanZoom] = useState<boolean>(config.get('mermaid.panZoom'))
 
   useEffect(() => {
     const themeObserver = config.observe('mermaid.theme', setTheme)
-    const autoScaleObserver = config.observe('mermaid.autoScale', setAutoScale)
     const toolbarObserver = config.observe('mermaid.toolbar', setToolbar)
     const panZoomObserver = config.observe('mermaid.panZoom', setPanZoom)
     return () => {
       themeObserver.dispose()
-      autoScaleObserver.dispose()
       toolbarObserver.dispose()
       panZoomObserver.dispose()
     }
   }, [config])
 
-  return { theme, autoScale, toolbar, panZoom }
+  return { theme, toolbar, panZoom }
 }
 
 const renderDiagram = async (

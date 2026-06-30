@@ -22,14 +22,14 @@ const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
     return ''
   }, [children])
 
-  const { theme, autoScale, panZoom } = useConfig()
+  const { theme, panZoom } = useConfig()
   const { printMode } = useContext(markdownRenderer.Context)
   const { error, containerRef, renderNonce } = useMermaidRendering(id, code, printMode, theme)
 
   usePanZoom(containerRef, renderNonce, panZoom && !printMode)
 
   return (
-    <div className={`mermaid-diagram theme-${theme} ${autoScale ? '' : 'disable-auto-scale'}`}>
+    <div className={`mermaid-diagram theme-${theme}`}>
       <div ref={containerRef} />
       {error && (
         <div className="ui error message">
