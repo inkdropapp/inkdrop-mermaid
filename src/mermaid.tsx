@@ -38,9 +38,9 @@ const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
     )
 
   return (
-    <div className="mermaid-diagram">
-      <div className="mermaid-diagram-content">
-        <div ref={containerRef} />
+    <div className={`mermaid-diagram`}>
+      <div className={`mermaid-diagram-content`}>
+        <div className={printMode ? '' : ' mermaid-dot-grid'} ref={containerRef} />
       </div>
       {toolbar && !printMode && (
         <MermaidToolbar

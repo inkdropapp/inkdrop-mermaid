@@ -2,6 +2,15 @@
   position: relative;
 }
 
+.mermaid-dot-grid {
+  background-image: radial-gradient(
+    circle,
+    light-dark(var(--transparent-black), var(--transparent-white)) 1px,
+    transparent 1px
+  );
+  background-size: 16px 16px;
+}
+
 /* Floating toolbar: hidden until the diagram is hovered, anchored bottom-right.
    It is a sibling of the pan/zoom container so it stays put while the diagram
    is panned/zoomed. */

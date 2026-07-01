@@ -36,7 +36,7 @@ export const MermaidFullscreenStage: React.FC<MermaidFullscreenStageProps> = ({
   return (
     <>
       <div className="mermaid-diagram-content">
-        <div ref={containerRef} />
+        <div className="mermaid-dot-grid" ref={containerRef} />
       </div>
       <MermaidToolbar error={error} panZoom={panZoom} controls={controls} />
       {error && (
