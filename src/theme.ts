@@ -3,120 +3,119 @@ import type { MermaidConfig } from 'mermaid'
 type ThemeVariables = NonNullable<MermaidConfig['themeVariables']>
 
 /**
- * Fixed hex "seeds" for Mermaid's categorical scales (`cScale*` / `git*` /
- * `pie*` / `quadrant*`). These are a designed multi-hue palette, never themed:
- * those scales read better as a stable set than as shades of one themed colour.
- * They are only khroma fuel — never painted directly as a themeable surface.
- */
-const seeds: ThemeVariables = {
-  primaryColor: '#e2e8f0',
-  secondaryColor: '#cbd5e1',
-  tertiaryColor: '#f1f5f9',
-  primaryTextColor: '#1e293b',
-  quadrant1Fill: '#e2e8f0'
-}
-
-/**
- * The `surface*` / `surfacePeer*` overrides (block / C4 diagrams). Listed
- * explicitly so each surface is a flat themed colour rather than a khroma
- * derivation of `mainBkg`.
+ * The `surface*` / `surfacePeer*` overrides (block / C4 diagrams). All five
+ * depth levels share the cluster surface/border tokens.
  */
 const surfaceTokens = (): Record<string, string> =>
   Object.fromEntries(
     Array.from({ length: 5 }, (_, i) => [
-      [`surface${i}`, 'cluster-bg'],
-      [`surfacePeer${i}`, 'cluster-border']
+      [`surface${i}`, 'surface-background-color'],
+      [`surfacePeer${i}`, 'surface-border-color']
     ]).flat()
   )
 
 /**
- * Mermaid `themeVariables` key → Inkdrop `--mermaid-*` token. Every entry is
- * resolved to a concrete colour at render time (see {@link buildInkdropThemeVariables}),
- * so diagrams follow the active theme — including light/dark, which is expressed
- * with `light-dark()` in `@inkdropapp/css/mermaid.css`.
+ * Mermaid `themeVariables` key → Inkdrop `--mermaid-*` token (the suffix after
+ * `--mermaid-`). Every Mermaid colour we drive has its own explicit token; the
+ * tokens themselves cascade from a handful of base ones in
+ * `@inkdropapp/css/mermaid.css` (e.g. `--mermaid-actor-background-color`
+ * defaults to `var(--mermaid-node-background-color)`), so a theme can override
+ * one surface or a whole family.
+ *
+ * Each token is resolved to a concrete colour at render time (see
+ * {@link buildInkdropThemeVariables}), so diagrams follow the active theme —
+ * light/dark via `light-dark()` in `mermaid.css`.
  */
 const tokens: Record<string, string> = {
   // --- Canvas / general ---
-  background: 'bg',
-  textColor: 'text',
-  titleColor: 'title',
-  lineColor: 'line',
-  arrowheadColor: 'line',
+  background: 'background-color',
+  textColor: 'text-color',
+  titleColor: 'title-color',
+  lineColor: 'line-color',
+  arrowheadColor: 'arrowhead-color',
+  defaultLinkColor: 'default-link-color',
 
   // --- Flowchart / generic nodes ---
-  mainBkg: 'node-bg',
-  nodeBorder: 'node-border',
-  nodeTextColor: 'node-text',
-  border2: 'cluster-border',
-  clusterBkg: 'cluster-bg',
-  clusterBorder: 'cluster-border',
-  defaultLinkColor: 'line',
-  edgeLabelBackground: 'edge-label-bg',
-  labelColor: 'node-text',
-  rowOdd: 'node-bg',
-  rowEven: 'cluster-bg',
-  attributeBackgroundColorOdd: 'node-bg',
-  attributeBackgroundColorEven: 'cluster-bg',
+  mainBkg: 'node-background-color',
+  nodeBorder: 'node-border-color',
+  nodeTextColor: 'node-text-color',
+  labelColor: 'label-color',
+  border2: 'secondary-border-color',
+  clusterBkg: 'cluster-background-color',
+  clusterBorder: 'cluster-border-color',
+  edgeLabelBackground: 'edge-label-background-color',
   ...surfaceTokens(),
 
+  // --- Entity-relationship rows / attributes / relations ---
+  rowOdd: 'row-odd-background-color',
+  rowEven: 'row-even-background-color',
+  attributeBackgroundColorOdd: 'attribute-odd-background-color',
+  attributeBackgroundColorEven: 'attribute-even-background-color',
+  relationColor: 'relation-color',
+  relationLabelColor: 'relation-label-color',
+  relationLabelBackground: 'relation-label-background-color',
+
   // --- Sequence ---
-  actorBkg: 'node-bg',
-  actorBorder: 'node-border',
-  actorTextColor: 'node-text',
-  actorLineColor: 'line',
-  signalColor: 'line',
-  signalTextColor: 'text',
-  labelBoxBkgColor: 'node-bg',
-  labelBoxBorderColor: 'node-border',
-  labelTextColor: 'text',
-  loopTextColor: 'text',
-  activationBkgColor: 'node-bg',
-  activationBorderColor: 'node-border',
-  noteBkgColor: 'note-bg',
-  noteBorderColor: 'note-border',
-  noteTextColor: 'note-text',
+  actorBkg: 'actor-background-color',
+  actorBorder: 'actor-border-color',
+  actorTextColor: 'actor-text-color',
+  actorLineColor: 'actor-line-color',
+  signalColor: 'signal-color',
+  signalTextColor: 'signal-text-color',
+  labelBoxBkgColor: 'label-box-background-color',
+  labelBoxBorderColor: 'label-box-border-color',
+  labelTextColor: 'label-text-color',
+  loopTextColor: 'loop-text-color',
+  activationBkgColor: 'activation-background-color',
+  activationBorderColor: 'activation-border-color',
+  sequenceNumberColor: 'sequence-number-color',
+  noteBkgColor: 'note-background-color',
+  noteBorderColor: 'note-border-color',
+  noteTextColor: 'note-text-color',
 
   // --- Class ---
-  classText: 'node-text',
+  classText: 'class-text-color',
 
   // --- State ---
-  stateBkg: 'node-bg',
-  stateBorder: 'node-border',
-  stateLabelColor: 'node-text',
-  transitionColor: 'line',
-  transitionLabelColor: 'text',
-  specialStateColor: 'line',
-  compositeBackground: 'cluster-bg',
-  compositeTitleBackground: 'cluster-bg',
-  compositeBorder: 'cluster-border',
-  altBackground: 'cluster-bg',
-  innerEndBackground: 'node-border',
-
-  // --- Entity-relationship ---
-  relationColor: 'line',
-  relationLabelColor: 'text',
-  relationLabelBackground: 'edge-label-bg',
+  stateBkg: 'state-background-color',
+  stateBorder: 'state-border-color',
+  stateLabelColor: 'state-label-color',
+  transitionColor: 'transition-color',
+  transitionLabelColor: 'transition-label-color',
+  specialStateColor: 'special-state-color',
+  compositeBackground: 'composite-background-color',
+  compositeTitleBackground: 'composite-title-background-color',
+  compositeBorder: 'composite-border-color',
+  altBackground: 'alt-background-color',
+  innerEndBackground: 'inner-end-background-color',
 
   // --- Gantt ---
-  sectionBkgColor: 'section-bg',
-  sectionBkgColor2: 'section-bg-alt',
-  altSectionBkgColor: 'section-bg-alt',
-  excludeBkgColor: 'section-bg-alt',
-  taskBkgColor: 'task-bg',
-  taskBorderColor: 'task-border',
-  taskTextColor: 'task-text',
-  taskTextLightColor: 'task-text',
-  taskTextDarkColor: 'task-text',
-  taskTextOutsideColor: 'text',
-  taskTextClickableColor: 'task-text',
-  activeTaskBkgColor: 'task-active-bg',
-  activeTaskBorderColor: 'task-active-border',
-  doneTaskBkgColor: 'task-done-bg',
-  doneTaskBorderColor: 'task-done-border',
-  critBkgColor: 'task-crit-bg',
-  critBorderColor: 'task-crit-border',
-  gridColor: 'grid',
-  todayLineColor: 'today'
+  sectionBkgColor: 'section-background-color',
+  sectionBkgColor2: 'alt-section-background-color',
+  altSectionBkgColor: 'alt-section-background-color',
+  excludeBkgColor: 'exclude-background-color',
+  taskBkgColor: 'task-background-color',
+  taskBorderColor: 'task-border-color',
+  taskTextColor: 'task-text-color',
+  taskTextLightColor: 'task-text-light-color',
+  taskTextDarkColor: 'task-text-dark-color',
+  taskTextOutsideColor: 'task-text-outside-color',
+  taskTextClickableColor: 'task-text-clickable-color',
+  activeTaskBkgColor: 'active-task-background-color',
+  activeTaskBorderColor: 'active-task-border-color',
+  doneTaskBkgColor: 'done-task-background-color',
+  doneTaskBorderColor: 'done-task-border-color',
+  critBkgColor: 'crit-task-background-color',
+  critBorderColor: 'crit-task-border-color',
+  gridColor: 'grid-color',
+  todayLineColor: 'today-line-color',
+
+  // --- Seed palette: drives Mermaid's categorical scales (pie / git / quadrant) ---
+  primaryColor: 'primary-color',
+  secondaryColor: 'secondary-color',
+  tertiaryColor: 'tertiary-color',
+  primaryTextColor: 'primary-text-color',
+  quadrant1Fill: 'quadrant-1-background-color'
 }
 
 /**
@@ -125,17 +124,15 @@ const tokens: Record<string, string> = {
  * Mermaid's `base` theme runs colours through **khroma**, which throws on a raw
  * `var()`. Rather than patch khroma, we hand it concrete colours: every
  * `--mermaid-*` token is resolved to an `rgb(...)` value by `resolve` (see
- * `resolveInkdropThemeVariables` in `utils.ts`) at render time, so the result
- * reflects the active theme (light/dark included) yet is plain colour data
- * Mermaid can derive from safely.
+ * `resolveInkdropThemeVariables` in `utils.ts`) at render time. That includes
+ * the seed palette, so even the categorical scales (pie / git / quadrant) that
+ * Mermaid derives from `primaryColor`/`secondaryColor`/`tertiaryColor` follow
+ * the active theme.
  *
- * @param resolve - Maps a `--mermaid-*` token (without the prefix) to the
- *   concrete colour the active theme paints it, e.g. `'node-bg'` → `'rgb(...)'`.
- * @returns A `themeVariables` map: the fixed hex {@link seeds} plus the resolved
- *   `var()` leaves.
+ * @param resolve - Maps a `--mermaid-*` token (the suffix after `--mermaid-`) to
+ *   the concrete colour the active theme paints it, e.g.
+ *   `'node-background-color'` → `'rgb(...)'`.
+ * @returns A `themeVariables` map of resolved colours.
  */
-export const buildInkdropThemeVariables = (resolve: (token: string) => string): ThemeVariables => ({
-  ...seeds,
-  ...Object.fromEntries(Object.entries(tokens).map(([key, token]) => [key, resolve(token)])),
-  radius: 3
-})
+export const buildInkdropThemeVariables = (resolve: (token: string) => string): ThemeVariables =>
+  Object.fromEntries(Object.entries(tokens).map(([key, token]) => [key, resolve(token)]))
