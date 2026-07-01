@@ -52,7 +52,9 @@ export const usePanZoom = (
         bounds: true,
         boundsPadding: BOUNDS_PADDING,
         // Plain wheel scrolls the note; only Ctrl/Cmd + wheel zooms the diagram.
-        beforeWheel: e => !e.ctrlKey && !e.metaKey
+        beforeWheel: e => !e.ctrlKey && !e.metaKey,
+        // Ctrl/Cmd + mouse-down selects diagram text instead of panning.
+        beforeMouseDown: e => e.ctrlKey || e.metaKey
       })
       instanceRef.current = instance
       const { x, y, scale } = instance.getTransform()

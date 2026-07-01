@@ -50,6 +50,7 @@ Rendered diagrams are interactive:
 
 - **Drag** to pan.
 - **Ctrl/Cmd + scroll** to zoom in and out (a plain scroll still scrolls the note).
+- **Ctrl/Cmd + drag** to select text in the diagram instead of panning.
 
 Hover a diagram to reveal a floating toolbar in the bottom-right corner with zoom
 in / out / reset controls and a button to open the diagram **full-screen**. A subtle
@@ -101,10 +102,10 @@ More details can be found in [the Mermaid documentation](https://mermaid.js.org/
 
 Configure the plugin in Preferences → Plugins → mermaid:
 
-| Option          | Default | Description                                                           |
-| --------------- | ------- | --------------------------------------------------------------------- |
-| **Pan & Zoom**  | On      | Drag to pan and Ctrl/Cmd + scroll to zoom rendered diagrams.          |
-| **Toolbar**     | On      | Show a hover toolbar with zoom controls and a full-screen button.     |
+| Option         | Default | Description                                                       |
+| -------------- | ------- | ----------------------------------------------------------------- |
+| **Pan & Zoom** | On      | Drag to pan and Ctrl/Cmd + scroll to zoom rendered diagrams.      |
+| **Toolbar**    | On      | Show a hover toolbar with zoom controls and a full-screen button. |
 
 ## Changelog
 
