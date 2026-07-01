@@ -22,15 +22,39 @@ export const useConfig = () => {
   return { toolbar, panZoom }
 }
 
+const srgbColorPattern = /^color\(srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+))?\s*\)$/
+
+/**
+ * Serialize a browser-computed colour into a form khroma (Mermaid's colour
+ * maths) can parse.
+ *
+ * `getComputedStyle().color` yields legacy `rgb()` / `rgba()` for most colours,
+ * but modern engines serialize `color-mix()` / `color()` results as the CSS
+ * Color 4 form `color(srgb r g b [/ a])`, which khroma rejects ("Unsupported
+ * color format") — crashing the render. Convert that one form to `rgb()` /
+ * `rgba()`; pass every already-legacy value through untouched.
+ */
+const toKhromaColor = (computedColor: string): string => {
+  const match = srgbColorPattern.exec(computedColor)
+  if (!match) return computedColor
+  const [red, green, blue] = [match[1], match[2], match[3]].map(channel =>
+    Math.round(Math.min(1, Math.max(0, Number(channel))) * 255)
+  )
+  return match[4] === undefined
+    ? `rgb(${red}, ${green}, ${blue})`
+    : `rgba(${red}, ${green}, ${blue}, ${match[4]})`
+}
+
 /**
  * Resolve Mermaid's `themeVariables` from Inkdrop's `--mermaid-*` CSS variables.
  *
  * We can't read the custom properties directly: their values are `light-dark()`
  * / nested `var()` expressions that only collapse to a colour when *used*. So we
  * assign each `var(--mermaid-<token>)` to a throwaway probe's `color` and read
- * the browser-computed `rgb(...)` back — exactly the colour the active theme
- * paints, light/dark included. Passing concrete colours (not `var()`) is what
- * lets Mermaid's `base` theme run them through khroma without crashing.
+ * the browser-computed colour back — exactly the colour the active theme paints,
+ * light/dark included — normalising it via `toKhromaColor` so `color-mix()` /
+ * `color()` results reach khroma as `rgb()`. Passing concrete colours (not
+ * `var()`) is what lets Mermaid's `base` theme run them through khroma safely.
  *
  * Resolving per render means a diagram picks up the theme active when it renders.
  *
@@ -46,7 +70,7 @@ const resolveInkdropThemeVariables = (forceLightMode: boolean) => {
   try {
     return buildInkdropThemeVariables(token => {
       probe.style.color = `var(--mermaid-${token})`
-      return getComputedStyle(probe).color
+      return toKhromaColor(getComputedStyle(probe).color)
     })
   } finally {
     probe.remove()
