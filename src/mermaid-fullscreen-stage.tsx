@@ -1,4 +1,3 @@
-import type { MermaidConfig } from 'mermaid'
 import React, { useMemo } from 'react'
 
 import { MermaidToolbar } from './mermaid-toolbar'
@@ -8,8 +7,6 @@ import { useMermaidRendering } from './utils'
 interface MermaidFullscreenStageProps {
   /** The diagram source; re-rendered at a fresh id. */
   code: string
-  /** Active theme — render-effect dependency (config drives the actual theme). */
-  theme: MermaidConfig['theme']
   /** Resolved `panZoom` flag, mirrored from the inline view. */
   panZoom: boolean
 }
@@ -23,7 +20,6 @@ interface MermaidFullscreenStageProps {
  */
 export const MermaidFullscreenStage: React.FC<MermaidFullscreenStageProps> = ({
   code,
-  theme,
   panZoom
 }) => {
   const id = useMemo(
@@ -34,7 +30,7 @@ export const MermaidFullscreenStage: React.FC<MermaidFullscreenStageProps> = ({
         .substring(0, 5)}`,
     []
   )
-  const { error, containerRef, renderNonce } = useMermaidRendering(id, code, false, theme)
+  const { error, containerRef, renderNonce } = useMermaidRendering(id, code, false)
   const controls = usePanZoom(containerRef, renderNonce, panZoom)
 
   return (

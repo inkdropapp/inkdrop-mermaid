@@ -24,9 +24,9 @@ const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
     return ''
   }, [children])
 
-  const { theme, toolbar, panZoom } = useConfig()
+  const { toolbar, panZoom } = useConfig()
   const { printMode } = useContext(markdownRenderer.Context)
-  const { error, containerRef, renderNonce } = useMermaidRendering(id, code, printMode, theme)
+  const { error, containerRef, renderNonce } = useMermaidRendering(id, code, printMode)
 
   const controls = usePanZoom(containerRef, renderNonce, panZoom && !printMode)
 
@@ -34,11 +34,11 @@ const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
     commands.dispatch<MermaidCommands>(
       containerRef.current ?? document.body,
       'mermaid:open-fullscreen',
-      { code, theme, panZoom }
+      { code, panZoom }
     )
 
   return (
-    <div className={`mermaid-diagram theme-${theme}`}>
+    <div className="mermaid-diagram">
       <div className="mermaid-diagram-content">
         <div ref={containerRef} />
       </div>

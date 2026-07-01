@@ -1,5 +1,4 @@
 import type { ButtonProps, ModalProps } from '@inkdropapp/types'
-import type { MermaidConfig } from 'mermaid'
 import React, { Suspense, lazy, useCallback, useEffect, useState } from 'react'
 
 import { getEnv } from './env'
@@ -7,7 +6,6 @@ import { getEnv } from './env'
 /** Payload of the command that opens the full-screen viewer. */
 export interface OpenFullscreenDetail {
   code: string
-  theme: MermaidConfig['theme']
   panZoom: boolean
 }
 
@@ -28,8 +26,8 @@ const MermaidFullscreenStage = lazy(() =>
  * `absolute`ly over the window — cover the screen without a React portal.
  *
  * It listens for the `mermaid:open-fullscreen` command, which a diagram's expand
- * button dispatches with that diagram's `code` / `theme` / `panZoom`, and shows
- * it in the modal. Esc / backdrop / the close button dismiss it.
+ * button dispatches with that diagram's `code` / `panZoom`, and shows it in the
+ * modal. Esc / backdrop / the close button dismiss it.
  */
 export const MermaidFullscreen: React.FC = () => {
   const Modal = getEnv().components.getComponentClass<ModalProps>('Modal')!
@@ -57,14 +55,10 @@ export const MermaidFullscreen: React.FC = () => {
       onBackdropClick={close}
       onEscKeyDown={close}
     >
-      <div className={`mermaid-fullscreen-stage mermaid-diagram theme-${diagram?.theme ?? ''}`}>
+      <div className="mermaid-fullscreen-stage mermaid-diagram">
         {diagram && (
           <Suspense fallback={null}>
-            <MermaidFullscreenStage
-              code={diagram.code}
-              theme={diagram.theme}
-              panZoom={diagram.panZoom}
-            />
+            <MermaidFullscreenStage code={diagram.code} panZoom={diagram.panZoom} />
           </Suspense>
         )}
         <Button className="close-button" icon="close" tooltip="Close" onClick={close} />

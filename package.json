@@ -24,6 +24,7 @@
     "oxfmt": "0.56.0",
     "oxlint": "1.71.0",
     "panzoom": "9.4.4",
+    "playwright": "^1.61.1",
     "tsdown": "^0.22.3",
     "typescript": "^6.0.3"
   },
