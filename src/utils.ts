@@ -33,15 +33,19 @@ export const useConfig = () => {
  * lets Mermaid's `base` theme run them through khroma without crashing.
  *
  * Resolving per render means a diagram picks up the theme active when it renders.
+ *
+ * @param forceLightMode - Pin the probe to `color-scheme: light` so every
+ *   `light-dark()` resolves to its light branch regardless of the app theme.
+ *   Used for print/export, where diagrams should render for white paper.
  */
-const resolveInkdropThemeVariables = () => {
+const resolveInkdropThemeVariables = (forceLightMode: boolean) => {
   const probe = document.createElement('span')
   probe.style.cssText = 'position:absolute;width:0;height:0;visibility:hidden;pointer-events:none'
+  if (forceLightMode) probe.style.colorScheme = 'light'
   document.body.appendChild(probe)
   try {
     return buildInkdropThemeVariables(token => {
       probe.style.color = `var(--mermaid-${token})`
-      console.log('probe.style.color:', probe.style.color, getComputedStyle(probe).color)
       return getComputedStyle(probe).color
     })
   } finally {
@@ -49,15 +53,16 @@ const resolveInkdropThemeVariables = () => {
   }
 }
 
-const renderDiagram = async (id: string, code: string): Promise<RenderResult> => {
-  // Always render with the built-in `inkdrop` theme: Mermaid's `base` theme plus
-  // our overrides, resolved from `--mermaid-*` CSS variables (defined in
-  // @inkdropapp/css/mermaid.css) so diagrams follow the active Inkdrop theme.
+const renderDiagram = async (
+  id: string,
+  code: string,
+  printMode: boolean
+): Promise<RenderResult> => {
   mermaid.initialize({
     startOnLoad: false,
     suppressErrorRendering: true,
     theme: 'base',
-    themeVariables: resolveInkdropThemeVariables()
+    themeVariables: resolveInkdropThemeVariables(printMode)
   })
   try {
     return await mermaid.render(id, code)
@@ -69,7 +74,7 @@ const renderDiagram = async (id: string, code: string): Promise<RenderResult> =>
   }
 }
 
-export const useMermaidRendering = (id: string, code: string) => {
+export const useMermaidRendering = (id: string, code: string, printMode: boolean) => {
   const [error, setError] = useState<Error | null>(null)
   // Bumped after every successful render so downstream hooks (e.g. pan/zoom)
   // can re-attach to the freshly injected SVG without diffing the DOM.
@@ -82,7 +87,7 @@ export const useMermaidRendering = (id: string, code: string) => {
     let cancelled = false
     const container = containerRef.current
 
-    renderDiagram(id, code)
+    renderDiagram(id, code, printMode)
       .then(({ svg, bindFunctions }) => {
         if (cancelled || !svg.length) return
 
@@ -106,7 +111,7 @@ export const useMermaidRendering = (id: string, code: string) => {
       container.innerHTML = ''
       document.querySelectorAll('body > div.mermaidTooltip').forEach(el => el.remove())
     }
-  }, [id, code])
+  }, [id, code, printMode])
 
   return { error, containerRef, renderNonce }
 }

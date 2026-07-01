@@ -26,7 +26,7 @@ const Mermaid: React.FC<CodeComponentProps> = ({ children }) => {
 
   const { toolbar, panZoom } = useConfig()
   const { printMode } = useContext(markdownRenderer.Context)
-  const { error, containerRef, renderNonce } = useMermaidRendering(id, code)
+  const { error, containerRef, renderNonce } = useMermaidRendering(id, code, printMode)
 
   const controls = usePanZoom(containerRef, renderNonce, panZoom && !printMode)
 

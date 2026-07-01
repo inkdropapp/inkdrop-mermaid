@@ -30,7 +30,7 @@ export const MermaidFullscreenStage: React.FC<MermaidFullscreenStageProps> = ({
         .substring(0, 5)}`,
     []
   )
-  const { error, containerRef, renderNonce } = useMermaidRendering(id, code)
+  const { error, containerRef, renderNonce } = useMermaidRendering(id, code, false)
   const controls = usePanZoom(containerRef, renderNonce, panZoom)
 
   return (
