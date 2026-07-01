@@ -56,8 +56,8 @@ const renderDiagram = async (id: string, code: string): Promise<RenderResult> =>
   mermaid.initialize({
     startOnLoad: false,
     suppressErrorRendering: true,
-    theme: 'dark'
-    // themeVariables: resolveInkdropThemeVariables()
+    theme: 'base',
+    themeVariables: resolveInkdropThemeVariables()
   })
   try {
     return await mermaid.render(id, code)
