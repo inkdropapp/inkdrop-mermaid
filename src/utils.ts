@@ -1,41 +1,63 @@
-import mermaid, { MermaidConfig, RenderResult } from 'mermaid'
+import mermaid, { RenderResult } from 'mermaid'
 import { useState, useEffect, useRef } from 'react'
 
 import { getEnv } from './env'
+import { buildInkdropThemeVariables } from './theme'
 
 export const useConfig = () => {
   const { config } = getEnv()
 
-  const [theme, setTheme] = useState<MermaidConfig['theme']>(config.get('mermaid.theme'))
   const [toolbar, setToolbar] = useState<boolean>(config.get('mermaid.toolbar'))
   const [panZoom, setPanZoom] = useState<boolean>(config.get('mermaid.panZoom'))
 
   useEffect(() => {
-    const themeObserver = config.observe('mermaid.theme', setTheme)
     const toolbarObserver = config.observe('mermaid.toolbar', setToolbar)
     const panZoomObserver = config.observe('mermaid.panZoom', setPanZoom)
     return () => {
-      themeObserver.dispose()
       toolbarObserver.dispose()
       panZoomObserver.dispose()
     }
   }, [config])
 
-  return { theme, toolbar, panZoom }
+  return { toolbar, panZoom }
 }
 
-const renderDiagram = async (
-  id: string,
-  code: string,
-  printMode: boolean
-): Promise<RenderResult> => {
-  const { config } = getEnv()
+/**
+ * Resolve Mermaid's `themeVariables` from Inkdrop's `--mermaid-*` CSS variables.
+ *
+ * We can't read the custom properties directly: their values are `light-dark()`
+ * / nested `var()` expressions that only collapse to a colour when *used*. So we
+ * assign each `var(--mermaid-<token>)` to a throwaway probe's `color` and read
+ * the browser-computed `rgb(...)` back — exactly the colour the active theme
+ * paints, light/dark included. Passing concrete colours (not `var()`) is what
+ * lets Mermaid's `base` theme run them through khroma without crashing.
+ *
+ * Resolving per render means a diagram picks up the theme active when it renders.
+ */
+const resolveInkdropThemeVariables = () => {
+  const probe = document.createElement('span')
+  probe.style.cssText = 'position:absolute;width:0;height:0;visibility:hidden;pointer-events:none'
+  document.body.appendChild(probe)
+  try {
+    return buildInkdropThemeVariables(token => {
+      probe.style.color = `var(--mermaid-${token})`
+      console.log('probe.style.color:', probe.style.color, getComputedStyle(probe).color)
+      return getComputedStyle(probe).color
+    })
+  } finally {
+    probe.remove()
+  }
+}
+
+const renderDiagram = async (id: string, code: string): Promise<RenderResult> => {
+  // Always render with the built-in `inkdrop` theme: Mermaid's `base` theme plus
+  // our overrides, resolved from `--mermaid-*` CSS variables (defined in
+  // @inkdropapp/css/mermaid.css) so diagrams follow the active Inkdrop theme.
   mermaid.initialize({
     startOnLoad: false,
     suppressErrorRendering: true,
-    theme: printMode ? 'default' : config.get('mermaid.theme'),
-    themeCSS: config.get('mermaid.themeCSS'),
-    themeVariables: JSON.parse(config.get('mermaid.themeVariables') || '{}')
+    theme: 'dark'
+    // themeVariables: resolveInkdropThemeVariables()
   })
   try {
     return await mermaid.render(id, code)
@@ -47,12 +69,7 @@ const renderDiagram = async (
   }
 }
 
-export const useMermaidRendering = (
-  id: string,
-  code: string,
-  printMode: boolean,
-  theme: MermaidConfig['theme']
-) => {
+export const useMermaidRendering = (id: string, code: string) => {
   const [error, setError] = useState<Error | null>(null)
   // Bumped after every successful render so downstream hooks (e.g. pan/zoom)
   // can re-attach to the freshly injected SVG without diffing the DOM.
@@ -65,7 +82,7 @@ export const useMermaidRendering = (
     let cancelled = false
     const container = containerRef.current
 
-    renderDiagram(id, code, printMode)
+    renderDiagram(id, code)
       .then(({ svg, bindFunctions }) => {
         if (cancelled || !svg.length) return
 
@@ -89,7 +106,7 @@ export const useMermaidRendering = (
       container.innerHTML = ''
       document.querySelectorAll('body > div.mermaidTooltip').forEach(el => el.remove())
     }
-  }, [id, code, theme, printMode])
+  }, [id, code])
 
   return { error, containerRef, renderNonce }
 }

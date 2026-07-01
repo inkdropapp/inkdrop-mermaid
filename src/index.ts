@@ -19,25 +19,6 @@ class InkdropPlugin implements IInkdropPlugin {
       type: 'boolean',
       description: 'Show a hover toolbar with the diagram type and zoom controls',
       default: true
-    },
-    theme: {
-      title: 'Theme',
-      type: 'string',
-      default: 'forest',
-      description: 'Mermaid diagram colour theme',
-      enum: ['forest', 'default', 'neutral', 'dark', 'base']
-    },
-    themeCSS: {
-      title: 'Custom theme CSS',
-      type: 'string',
-      default: '',
-      description: 'Example: text { font-size: 30px !important; }'
-    },
-    themeVariables: {
-      title: 'Custom theme variables (JSON)',
-      type: 'string',
-      description: 'Example: { "primaryColor": "#ff0000" }',
-      default: '{}'
     }
   }
 
