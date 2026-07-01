@@ -1,5 +1,9 @@
 .mermaid-diagram {
   position: relative;
+
+  .mermaid-diagram-content {
+    overflow: hidden;
+  }
 }
 
 .mermaid-dot-grid {
