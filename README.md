@@ -1,6 +1,6 @@
 # Mermaid plugin for Inkdrop
 
-A plugin for drawing flowcharts and diagrams using [mermaid.js](https://mermaidjs.github.io/) in Markdown code block.
+A plugin for drawing flowcharts and diagrams using [mermaid.js](https://mermaid.js.org/) in Markdown code blocks.
 
 ## Install
 
@@ -44,30 +44,32 @@ It will be rendered as:
 
 ![Sequence diagram example](https://github.com/inkdropapp/inkdrop-mermaid/raw/master/docs/images/example-02.png)
 
-## Pan & Zoom
+## Interacting with diagrams
 
 Rendered diagrams are interactive:
 
 - **Drag** to pan.
 - **Ctrl/Cmd + scroll** to zoom in and out (a plain scroll still scrolls the note).
 
-Enabled by default — turn it off with the **Pan & Zoom** option in Preferences.
+Hover a diagram to reveal a floating toolbar in the bottom-right corner with zoom
+in / out / reset controls and a button to open the diagram **full-screen**. A subtle
+dot-grid backdrop tracks the diagram as you pan and zoom.
 
-## Customizations
+Both pan & zoom and the toolbar are enabled by default and can be toggled in
+[Preferences](#preferences).
 
-You can configure mermaid options in Preferences.
+## Theming
 
-Mermaid supports custom theme variables:
+Diagrams automatically match your active Inkdrop theme. Their colors are derived from
+the theme's `--mermaid-*` CSS variables and re-resolved on every render, so switching
+between light and dark — or any custom theme — restyles every diagram to fit. No
+configuration required.
 
-- https://mermaid-js.github.io/mermaid/#/./theming?id=theme-variables-reference-table
+Exports and prints render in light mode, so diagrams stay legible on white paper.
 
-![Options](https://github.com/inkdropapp/inkdrop-mermaid/raw/master/docs/images/config.png)
+### Per-diagram overrides
 
-**Note**: You have to reload the app to get the custom theme CSS and variables applied.
-
-### Inline theming
-
-It is also possible to override theme settings locally, for a specific diagram, using directives `%%init%%` like so:
+To override the theme for a single diagram, use Mermaid's `%%{init}%%` directive:
 
     ```mermaid
     %%{init:{
@@ -93,7 +95,16 @@ It yields:
 
 ![Inline theming example](https://github.com/inkdropapp/inkdrop-mermaid/raw/master/docs/images/example-03.png)
 
-More details can be found on [the Mermaid documentation](https://mermaid-js.github.io/mermaid/#/theming?id=themes-at-the-local-or-current-level).
+More details can be found in [the Mermaid documentation](https://mermaid.js.org/config/theming.html).
+
+## Preferences
+
+Configure the plugin in Preferences → Plugins → mermaid:
+
+| Option          | Default | Description                                                           |
+| --------------- | ------- | --------------------------------------------------------------------- |
+| **Pan & Zoom**  | On      | Drag to pan and Ctrl/Cmd + scroll to zoom rendered diagrams.          |
+| **Toolbar**     | On      | Show a hover toolbar with zoom controls and a full-screen button.     |
 
 ## Changelog
 
