@@ -41,24 +41,72 @@ export const usePanZoom = (
     if (!container || !container.parentElement || !container.querySelector('svg')) return
 
     let observer: IntersectionObserver | null = null
+    let detachListeners: (() => void) | null = null
 
     const init = () => {
       if (instanceRef.current || !hasSize(container)) return
+      const viewport = container.parentElement
+      if (!viewport) return
       const instance = panzoom(container, {
         minZoom: MIN_ZOOM,
         maxZoom: MAX_ZOOM,
-        // Keep at least BOUNDS_PADDING of the diagram within the viewport so it
-        // can't be panned or zoomed entirely out of view.
         bounds: true,
         boundsPadding: BOUNDS_PADDING,
-        // Plain wheel scrolls the note; only Ctrl/Cmd + wheel zooms the diagram.
         beforeWheel: e => !e.ctrlKey && !e.metaKey,
         // Ctrl/Cmd + mouse-down selects diagram text instead of panning.
-        beforeMouseDown: e => e.ctrlKey || e.metaKey
+        beforeMouseDown: e => e.ctrlKey || e.metaKey,
+        // Plain double-click zooms in by the same step as the toolbar buttons.
+        zoomDoubleClickSpeed: ZOOM_STEP
       })
       instanceRef.current = instance
       const { x, y, scale } = instance.getTransform()
       initialRef.current = { x, y, scale }
+
+      // The cursor mirrors what a gesture would do: open hand at rest, closed
+      // hand while panning, and a text caret while Ctrl/Cmd is held — which
+      // disables panning (see beforeMouseDown) to select the diagram's text.
+      let panning = false
+      let modifierHeld = false
+      const applyCursor = () => {
+        container.style.cursor = panning ? 'grabbing' : modifierHeld ? 'text' : 'grab'
+      }
+      applyCursor()
+
+      instance.on('panstart', () => {
+        panning = true
+        applyCursor()
+      })
+      instance.on('panend', () => {
+        panning = false
+        applyCursor()
+      })
+
+      const syncModifier = (e: KeyboardEvent) => {
+        const held = e.ctrlKey || e.metaKey
+        if (held === modifierHeld) return
+        modifierHeld = held
+        applyCursor()
+      }
+      window.addEventListener('keydown', syncModifier)
+      window.addEventListener('keyup', syncModifier)
+
+      // Ctrl/Cmd + double-click zooms out (panzoom always zooms in). Intercept
+      // in the capture phase so panzoom's own zoom-in never runs for it.
+      const zoomOutOnModifiedDblClick = (e: MouseEvent) => {
+        if (!e.ctrlKey && !e.metaKey) return
+        e.stopImmediatePropagation()
+        e.preventDefault()
+        const { left, top } = viewport.getBoundingClientRect()
+        instance.smoothZoom(e.clientX - left, e.clientY - top, 1 / ZOOM_STEP)
+      }
+      viewport.addEventListener('dblclick', zoomOutOnModifiedDblClick, true)
+
+      detachListeners = () => {
+        window.removeEventListener('keydown', syncModifier)
+        window.removeEventListener('keyup', syncModifier)
+        viewport.removeEventListener('dblclick', zoomOutOnModifiedDblClick, true)
+      }
+
       observer?.disconnect()
       observer = null
     }
@@ -72,6 +120,7 @@ export const usePanZoom = (
 
     return () => {
       observer?.disconnect()
+      detachListeners?.()
       instanceRef.current?.dispose()
       instanceRef.current = null
       initialRef.current = null
@@ -79,6 +128,7 @@ export const usePanZoom = (
       // render (which reuses this element) starts from the natural position.
       container.style.transform = ''
       container.style.transformOrigin = ''
+      container.style.cursor = ''
     }
   }, [containerRef, renderNonce, enabled])
 
