@@ -103,8 +103,27 @@ export const useMermaidRendering = (id: string, code: string, printMode: boolean
   // Bumped after every successful render so downstream hooks (e.g. pan/zoom)
   // can re-attach to the freshly injected SVG without diffing the DOM.
   const [renderNonce, setRenderNonce] = useState(0)
+  // Bumped when the app theme changes, forcing a re-render: colours are
+  // resolved from CSS and baked into the SVG at render time, so an
+  // already-rendered diagram won't pick up a new theme on its own.
+  const [themeGeneration, setThemeGeneration] = useState(0)
 
   const containerRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const { config } = getEnv()
+    let isInitialCall = true
+    const observer = config.observe('core.theme', () => {
+      if (isInitialCall) {
+        isInitialCall = false
+        return
+      }
+      setTimeout(() => {
+        setThemeGeneration(generation => generation + 1)
+      }, 400)
+    })
+    return () => observer.dispose()
+  }, [])
 
   useEffect(() => {
     if (!code || !containerRef.current) return
@@ -135,7 +154,7 @@ export const useMermaidRendering = (id: string, code: string, printMode: boolean
       container.innerHTML = ''
       document.querySelectorAll('body > div.mermaidTooltip').forEach(el => el.remove())
     }
-  }, [id, code, printMode])
+  }, [id, code, printMode, themeGeneration])
 
   return { error, containerRef, renderNonce }
 }
