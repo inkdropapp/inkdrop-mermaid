@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@inkdropapp/types':
-        specifier: ^0.0.8
-        version: 0.0.8
+        specifier: ^0.0.9
+        version: 0.0.9
       '@types/node':
         specifier: ^26.0.1
         version: 26.0.1
@@ -101,8 +101,8 @@ packages:
   '@iconify/utils@3.1.3':
     resolution: {integrity: sha512-LPKOXPn/zV+zis1oOfGWogaXVpqUybF3ZS6SCZIsz8vg0ivVp9+fVqyYB7xq0aiST/VhUQYGO1qo6uoYSiEJqw==}
 
-  '@inkdropapp/types@0.0.8':
-    resolution: {integrity: sha512-rYrZFZe8DKZMxbx1IjAY5OXSK7B7XpfCyw36UG+wFbHEd21TpMmQoEXggvjNXmM7cKT7b6Di8dZtbtC/6EAalA==}
+  '@inkdropapp/types@0.0.9':
+    resolution: {integrity: sha512-3FO++gxaWrZKEAPVYstS9mI2Bve8JwlElHJ+jw14is9CInDfSs6T4lbOv9wwmtYXCj37UX9x875XMfgs+5AXrQ==}
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -1225,7 +1225,7 @@ snapshots:
       '@iconify/types': 2.0.0
       import-meta-resolve: 4.2.0
 
-  '@inkdropapp/types@0.0.8':
+  '@inkdropapp/types@0.0.9':
     dependencies:
       '@codemirror/commands': 6.10.4
       '@codemirror/language': 6.12.4

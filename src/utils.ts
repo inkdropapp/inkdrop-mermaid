@@ -1,3 +1,4 @@
+import { useLocalConfigValue } from 'inkdrop'
 import mermaid, { RenderResult } from 'mermaid'
 import { useState, useEffect, useRef } from 'react'
 
@@ -107,23 +108,21 @@ export const useMermaidRendering = (id: string, code: string, printMode: boolean
   // resolved from CSS and baked into the SVG at render time, so an
   // already-rendered diagram won't pick up a new theme on its own.
   const [themeGeneration, setThemeGeneration] = useState(0)
+  const theme = useLocalConfigValue<string>('core.theme')
+  const isInitialThemeRef = useRef(true)
 
   const containerRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    const { config } = getEnv()
-    let isInitialCall = true
-    const observer = config.observe('core.theme', () => {
-      if (isInitialCall) {
-        isInitialCall = false
-        return
-      }
-      setTimeout(() => {
-        setThemeGeneration(generation => generation + 1)
-      }, 400)
-    })
-    return () => observer.dispose()
-  }, [])
+    if (isInitialThemeRef.current) {
+      isInitialThemeRef.current = false
+      return
+    }
+    const timer = setTimeout(() => {
+      setThemeGeneration(generation => generation + 1)
+    }, 400)
+    return () => clearTimeout(timer)
+  }, [theme])
 
   useEffect(() => {
     if (!code || !containerRef.current) return
